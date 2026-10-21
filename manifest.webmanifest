@@ -1,5 +1,6 @@
 {
-  "name": "Caisse Chlorophylle Night",
+"id": "/soiree/",  
+"name": "Caisse Chlorophylle Night",
   "short_name": "Chlorophylle",
   "description": "Caisses entrées, tickets et boissons de la Chlorophylle Night. Fonctionne hors ligne.",
   "lang": "fr",
