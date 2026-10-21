@@ -580,7 +580,7 @@ var A = {
     else S.storageMsg = 'Commande NON enregistrée dans l’appareil';
   },
   // Encaissement
-  openPay: function () { if (!(payTotal() > 0)) return; S.modal = 'pay'; S.payMode = 'cash'; S.mix = ''; S.received = S.caisse === 'tickets' && S.tk.budget ? String(S.tk.budget) : ''; },
+  openPay: function () { if (!(payTotal() > 0)) return; S.modal = 'pay'; S.payMode = 'cash'; S.mix = ''; S.received = ''; /* toujours vide : le caissier saisit ce qu'il reçoit */ },
   mode: function (m) { S.payMode = m; },
   bill: function (b) { var f = S.payMode === 'mix' ? 'mix' : 'received'; S[f] = String(r2(num(S[f]) + +b)).replace('.', ','); },
   exact: function () { S.received = String(r2(payTotal())).replace('.', ','); },

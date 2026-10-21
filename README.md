@@ -75,7 +75,7 @@ La carte actuelle (version 1) reprend la carte de la soirée : softs, bières, v
 
 ## Mettre à jour l'app
 
-Remplacer les fichiers sur GitHub, **et augmenter le numéro de cache dans `sw.js`** (actuellement `PREFIX + 'v6'`). Les appareils prennent la nouvelle version à la prochaine ouverture avec réseau.
+Remplacer les fichiers sur GitHub, **et augmenter le numéro de cache dans `sw.js`** (actuellement `PREFIX + 'v7'`). Les appareils prennent la nouvelle version à la prochaine ouverture avec réseau.
 
 ## Bonnes pratiques
 
