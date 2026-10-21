@@ -3,7 +3,7 @@
 // Préfixe propre à CETTE caisse : plusieurs caisses partagent l'adresse <compte>.github.io.
 var PREFIX = 'caisse-chlorophylle-';
 var CACHE = PREFIX + 'v8';
-var FILES = ['./', './index.html', './manifestSoiree.webmanifest', './catalogue.json',
+var FILES = ['./', './index.html', './manifest.webmanifest', './catalogue.json',
   './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png'];
 
 self.addEventListener('install', function (e) {
