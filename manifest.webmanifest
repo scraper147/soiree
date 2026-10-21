@@ -4,7 +4,7 @@
   "short_name": "Chlorophylle",
   "description": "Caisses entrées, tickets et boissons de la Chlorophylle Night. Fonctionne hors ligne.",
   "lang": "fr",
-  "start_url": "/soiree/",
+  "start_url": "/soiree/index.html",
   "scope": "/soiree/",
   "display": "fullscreen",
   "orientation": "any",
