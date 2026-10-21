@@ -56,6 +56,10 @@ input:focus{outline:2px solid var(--acc);outline-offset:1px}
 .seg.cs button[data-v="entrees"].on{background:var(--gold)}
 .seg.cs button[data-v="tickets"].on{background:var(--leaf)}
 .seg.cs button[data-v="boissons"].on{background:var(--mint)}
+.homebtn{height:48px;padding:0 16px;display:flex;align-items:center;gap:8px;flex-shrink:0;font-size:16px}
+.ctitle{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:800;color:var(--acc);white-space:nowrap}
+.phone .homebtn{height:44px;padding:0 12px}
+.phone .ctitle{font-size:19px}
 .hdate{font-size:14px;font-weight:700;color:var(--muted);text-align:right;line-height:1.3}
 .body{flex:1;display:flex;min-height:0}
 .main{flex:1;display:flex;flex-direction:column;gap:16px;padding:16px 18px;min-width:0;overflow-y:auto}
@@ -703,7 +707,7 @@ function exportCsv(night) {
    la Caisse Bar et la Caisse Sapins), intégré CHIFFRÉ (AES-GCM 256, PBKDF2-SHA256). Déverrouillé une fois par appareil.
    Rien n'est envoyé sans un appui sur « Envoyer ». */
 var GH_REPO = 'scraper147/ventes';   // vide = fonction masquée
-var GH_DOSSIER = 'chlorophylle';     // dossier de cette caisse dans le dépôt des ventes
+var GH_DOSSIER = 'soiree';     // dossier de cette caisse dans le dépôt des ventes
 var CLE_CHIFFREE = {"v":1,"kdf":"PBKDF2-SHA256","iter":600000,"salt":"5IZtB3dQO9ai0MwpOlomjg==","iv":"86amDE8FvOCiCDGl","data":"wOVUYuUolCQQadXsUb0ROhr0jWbh4xUYwGzesbv/g+vYObhfjXzhgVcZagBTguF0pvFyOU+HmRJZdfwh2Iz6obVMBltBCbmY7uh2G+TLtgbnHsfdtD/X2bXPdRnYoP1uJwnCOwc0nXpq8TIEmw=="};
 var GH_KEY = STORE_KEY + '-github';
 var GH = {};
@@ -875,13 +879,13 @@ function vHome() {
 
 /* ---------- En-tête caisse ---------- */
 function vHeader() {
-  var segC = '<div class="seg cs">' + Object.keys(CAISSES).map(function (c) {
-    return '<button class="' + (S.caisse === c ? 'on' : '') + '" data-a="caisse" data-v="' + c + '">' + (PHONE ? CAISSES[c].nom : CAISSES[c].nom) + '</button>'; }).join('') + '</div>';
+  var home = '<button class="btn homebtn" data-a="goHome" aria-label="Retour à l\u2019accueil">' + svg(I.home, 20) + (PHONE ? '' : '<span>Accueil</span>') + '</button>';
+  var segC = '<div class="ctitle">' + svg(I[S.caisse], PHONE ? 22 : 26) + '<span>' + CAISSES[S.caisse].nom + '</span></div>';
   var segT = '<div class="seg"><button class="' + (S.tab === 'caisse' ? 'on' : '') + '" data-a="tab" data-v="caisse">' + (S.caisse === 'boissons' ? 'Commande' : 'Caisse') + '</button><button class="' + (S.tab === 'hist' ? 'on' : '') + '" data-a="tab" data-v="hist">Historique</button></div>';
   var right = '<button class="iconbtn" data-a="toggleMenu" aria-label="Menu">' + svg(I.dots, 22) + '</button>';
-  if (PHONE) return '<div class="header"><img src="' + LOGO_S + '" alt="Chlorophylle Night" data-a="goHome">' + segC + '<div style="flex:1"></div>' + right + '</div>' +
+  if (PHONE) return '<div class="header">' + home + segC + '<div style="flex:1"></div>' + right + '</div>' +
     '<div class="subbar">' + segT + '<div class="hdate" style="margin-left:auto;font-size:12px">' + frDate(tonight()).slice(0, 5) + '<br>' + esc(devName()) + '</div></div>';
-  return '<div class="header"><img src="' + LOGO_S + '" alt="Chlorophylle Night" data-a="goHome" title="Accueil">' + segC + segT +
+  return '<div class="header">' + home + '<img src="' + LOGO_S + '" alt="Chlorophylle Night">' + segC + segT +
     '<div style="flex:1"></div><div class="hdate">' + nightLabel(tonight()) + '<br>' + esc(devName()) + '</div>' + right + '</div>';
 }
 

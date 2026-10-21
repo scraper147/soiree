@@ -1,9 +1,9 @@
 {
   "format": "chlorophylle-caisse/catalogue",
   "formatVersion": 1,
-  "version": 2,
+  "version": 1,
   "date": "2026-10-21",
-  "soiree": "Alice 2026",
+  "soiree": "Chlorophylle Night",
   "entrees": [
     {
       "id": "entree",

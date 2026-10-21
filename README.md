@@ -8,7 +8,7 @@ Application de caisse pour la soirée **Chlorophylle Night by 'Xa**, sur tablett
 | **Tickets** | Cartes de 18 cases à 3 € la case (54 € la carte). Boutons + / − 1 carte et + / − 1 case. Pavé « Le client demande… » : **un nombre de cases** (calcule le prix) ou **un budget** (calcule le maximum de cases et ce qui reste). Encaissement normal. |
 | **Boissons** | Le serveur encode la commande ; l'app affiche le **nombre de cases à barrer** sur la carte du client. Aucun encaissement. |
 
-L'accueil propose les 3 caisses ; on passe de l'une à l'autre par les onglets en haut. Chaque appareil peut servir n'importe quelle caisse.
+L'accueil propose les 3 caisses. Pour changer de caisse, revenir à l'accueil (bouton **Accueil** en haut à gauche). Chaque appareil peut servir n'importe quelle caisse.
 
 ## Une soirée = de midi à midi
 
@@ -40,11 +40,11 @@ Ensuite l'app fonctionne sans internet.
 
 ## Envoi des ventes sur GitHub (dépôt privé `scraper147/ventes`)
 
-Les soirées vont dans le dossier **`chlorophylle/`** du dépôt privé des ventes, avec le **même jeton et la même phrase de passe** que la Caisse Bar et la Caisse Sapins.
+Les soirées vont dans le dossier **`soiree/`** du dépôt privé des ventes, avec le **même jeton et la même phrase de passe** que la Caisse Bar et la Caisse Sapins.
 
 - **Déverrouiller (une fois par appareil)** : accueil → **Envoi GitHub**, ou menu **⋮ → GitHub**, saisir la phrase de passe des caisses. La phrase n'est jamais enregistrée ; **Verrouiller cet appareil** efface le jeton.
 - **Envoyer** (jamais automatiquement) : menu **⋮ → Envoyer sur GitHub** (soirée en cours), ou **Soirées enregistrées → Envoyer / Renvoyer sur GitHub**. Peut se faire plusieurs fois pendant la soirée : chaque envoi remplace le fichier de cet appareil.
-- Fichier : `chlorophylle/AAAA-MM-JJ_<nom de l'appareil>_<id>.json` (même contenu que l'export). Si l'appareil est renommé, l'ancien fichier est supprimé au prochain envoi.
+- Fichier : `soiree/AAAA-MM-JJ_<nom de l'appareil>_<id>.json` (même contenu que l'export). Si l'appareil est renommé, l'ancien fichier est supprimé au prochain envoi.
 - Une soirée envoyée compte comme sauvegardée : elle peut ensuite être effacée de l'appareil.
 
 ## Fin de soirée : bilan
@@ -75,7 +75,7 @@ La carte actuelle (version 1) reprend la carte de la soirée : softs, bières, v
 
 ## Mettre à jour l'app
 
-Remplacer les fichiers sur GitHub, **et augmenter le numéro de cache dans `sw.js`** (actuellement `PREFIX + 'v4'`). Les appareils prennent la nouvelle version à la prochaine ouverture avec réseau.
+Remplacer les fichiers sur GitHub, **et augmenter le numéro de cache dans `sw.js`** (actuellement `PREFIX + 'v6'`). Les appareils prennent la nouvelle version à la prochaine ouverture avec réseau.
 
 ## Bonnes pratiques
 
