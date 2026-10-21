@@ -879,13 +879,13 @@ function vHome() {
 
 /* ---------- En-tête caisse ---------- */
 function vHeader() {
-  var home = '<button class="btn homebtn" data-a="goHome" aria-label="Retour à l\u2019accueil">' + svg(I.home, 20) + (PHONE ? '' : '<span>Accueil</span>') + '</button>';
+  var home = '<img src="' + LOGO_S + '" alt="Chlorophylle Night \u2013 retour à l\u2019accueil" title="Accueil" data-a="goHome" style="cursor:pointer">';
   var segC = '<div class="ctitle">' + svg(I[S.caisse], PHONE ? 22 : 26) + '<span>' + CAISSES[S.caisse].nom + '</span></div>';
   var segT = '<div class="seg"><button class="' + (S.tab === 'caisse' ? 'on' : '') + '" data-a="tab" data-v="caisse">' + (S.caisse === 'boissons' ? 'Commande' : 'Caisse') + '</button><button class="' + (S.tab === 'hist' ? 'on' : '') + '" data-a="tab" data-v="hist">Historique</button></div>';
   var right = '<button class="iconbtn" data-a="toggleMenu" aria-label="Menu">' + svg(I.dots, 22) + '</button>';
   if (PHONE) return '<div class="header">' + home + segC + '<div style="flex:1"></div>' + right + '</div>' +
     '<div class="subbar">' + segT + '<div class="hdate" style="margin-left:auto;font-size:12px">' + frDate(tonight()).slice(0, 5) + '<br>' + esc(devName()) + '</div></div>';
-  return '<div class="header">' + home + '<img src="' + LOGO_S + '" alt="Chlorophylle Night">' + segC + segT +
+  return '<div class="header">' + home + segC + segT +
     '<div style="flex:1"></div><div class="hdate">' + nightLabel(tonight()) + '<br>' + esc(devName()) + '</div>' + right + '</div>';
 }
 
