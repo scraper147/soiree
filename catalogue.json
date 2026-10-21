@@ -1,7 +1,7 @@
 {
   "format": "chlorophylle-caisse/catalogue",
   "formatVersion": 1,
-  "version": 2,
+  "version": 3,
   "date": "2026-10-21",
   "soiree": "Alice 2026",
   "entrees": [
@@ -84,7 +84,7 @@
           "format": "verre",
           "cases": 1,
           "ordre": 7,
-          "actif": true
+          "actif": false
         }
       ],
       "actif": true
