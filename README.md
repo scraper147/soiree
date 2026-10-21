@@ -38,10 +38,20 @@ Ensuite l'app fonctionne sans internet.
 - **Préventes** : le contrôle des doublons porte sur les billets scannés **sur cet appareil**. Si deux appareils scannent à l'entrée, un même billet pourrait passer une fois sur chacun : de préférence, un seul appareil pour les préventes.
 - La lecture des QR codes utilise la fonction intégrée de Chrome sur Android. Sur un appareil qui ne la propose pas (iPhone/iPad, navigateur de bureau), saisir le code à la main.
 
+## Envoi des ventes sur GitHub (dépôt privé `scraper147/ventes`)
+
+Les soirées vont dans le dossier **`chlorophylle/`** du dépôt privé des ventes, avec le **même jeton et la même phrase de passe** que la Caisse Bar et la Caisse Sapins.
+
+- **Déverrouiller (une fois par appareil)** : accueil → **Envoi GitHub**, ou menu **⋮ → GitHub**, saisir la phrase de passe des caisses. La phrase n'est jamais enregistrée ; **Verrouiller cet appareil** efface le jeton.
+- **Envoyer** (jamais automatiquement) : menu **⋮ → Envoyer sur GitHub** (soirée en cours), ou **Soirées enregistrées → Envoyer / Renvoyer sur GitHub**. Peut se faire plusieurs fois pendant la soirée : chaque envoi remplace le fichier de cet appareil.
+- Fichier : `chlorophylle/AAAA-MM-JJ_<nom de l'appareil>_<id>.json` (même contenu que l'export). Si l'appareil est renommé, l'ancien fichier est supprimé au prochain envoi.
+- Une soirée envoyée compte comme sauvegardée : elle peut ensuite être effacée de l'appareil.
+
 ## Fin de soirée : bilan
 
-1. Sur **chaque appareil** : menu **⋮ → Exporter la soirée** → fichier `chlorophylle_AAAA-MM-JJ_<appareil>.json` (les 3 caisses de cet appareil).
-2. Sur un seul appareil (ou un PC avec l'app ouverte dans Chrome) : **Bilan de la soirée → Importer des fichiers d'autres appareils**, choisir les fichiers.
+1. Sur **chaque appareil** : menu **⋮ → Envoyer sur GitHub**.
+2. Sur un seul appareil : menu **⋮ → Bilan de la soirée → Charger depuis GitHub** : les fichiers des autres appareils pour cette soirée sont ajoutés au bilan.
+   Sans réseau : menu **⋮ → Exporter la soirée** sur chaque appareil, puis **Importer des fichiers** dans le bilan.
 3. Le bilan consolidé affiche :
    - **Recette** : total, cash, Bancontact, par caisse ;
    - **Entrées** : payantes, préventes (et doublons acceptés), tables VIP ;
@@ -51,7 +61,7 @@ Ensuite l'app fonctionne sans internet.
    - **Activité par heure** (entrées et commandes).
 4. **Exporter le bilan (CSV)** : tableau pour Excel.
 
-Les fichiers importés restent dans le bilan tant que l'app est ouverte ; les réimporter après une fermeture.
+Les fichiers chargés ou importés restent dans le bilan tant que l'app est ouverte ; les recharger après une fermeture.
 
 ## Modifier les prix ou la carte : `catalogue.json`
 
@@ -65,7 +75,7 @@ La carte actuelle (version 1) reprend la carte de la soirée : softs, bières, v
 
 ## Mettre à jour l'app
 
-Remplacer les fichiers sur GitHub, **et augmenter le numéro de cache dans `sw.js`** (`PREFIX + 'v1'` → `'v2'`…). Les appareils prennent la nouvelle version à la prochaine ouverture avec réseau.
+Remplacer les fichiers sur GitHub, **et augmenter le numéro de cache dans `sw.js`** (actuellement `PREFIX + 'v4'`). Les appareils prennent la nouvelle version à la prochaine ouverture avec réseau.
 
 ## Bonnes pratiques
 

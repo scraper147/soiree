@@ -527,7 +527,7 @@ var A = {
   toggleMenu: function () { S.menu = !S.menu; },
   openCart: function () { S.cartOpen = true; S.menu = false; },
   closeCart: function () { S.cartOpen = false; },
-  close: function () { if (S.modal === 'scan') camStop(); S.modal = null; S.scan = null; S.storageMsg = ''; },
+  close: function () { if (S.modal === 'scan') camStop(); S.modal = S.modal === 'ghcfg' && S.ghBack ? S.ghBack : null; S.ghBack = null; S.ghPending = null; S.scan = null; S.storageMsg = ''; },
   // Entrées
   addE: function (id) {
     var e = CATALOGUE.entrees.filter(function (x) { return x.id === id; })[0]; if (!e) return;
@@ -650,11 +650,7 @@ document.getElementById('importfile').addEventListener('change', function (e) {
         var j = JSON.parse(rd.result);
         if (j.format !== FORMAT_SOIREE || !Array.isArray(j.enregistrements)) throw new Error('pas un fichier de soirée');
         if (j.appareil && j.appareil.id === DEV.id) throw new Error('fichier de cet appareil');
-        var m = S.imports[j.soiree] || (S.imports[j.soiree] = {}), n = 0;
-        j.enregistrements.forEach(function (r) { if (r && r.id) { m[r.id] = r; n++; } });
-        S.importFiles = S.importFiles.filter(function (x) { return !(x.soiree === j.soiree && x.appareil === (j.appareil || {}).id); });
-        S.importFiles.push({ nom: f.name, soiree: j.soiree, appareil: (j.appareil || {}).id, appareilNom: (j.appareil || {}).nom || '?', n: n });
-        lastNight = j.soiree; ok++;
+        importNight(j, f.name); lastNight = j.soiree; ok++;
       } catch (err) { errs.push(f.name + ' : ' + err.message); }
       if (++done === files.length) {
         if (lastNight) S.bilanNight = lastNight;
@@ -665,6 +661,15 @@ document.getElementById('importfile').addEventListener('change', function (e) {
     rd.readAsText(f);
   });
 });
+function importNight(j, nom) {
+  var m = S.imports[j.soiree] || (S.imports[j.soiree] = {}), n = 0, ap = j.appareil || {};
+  // remplace un import précédent du même appareil pour cette soirée
+  Object.keys(m).forEach(function (id) { if (m[id].appareil && m[id].appareil.id === ap.id) delete m[id]; });
+  j.enregistrements.forEach(function (r) { if (r && r.id) { m[r.id] = r; n++; } });
+  S.importFiles = S.importFiles.filter(function (x) { return !(x.soiree === j.soiree && x.appareil === ap.id); });
+  S.importFiles.push({ nom: nom, soiree: j.soiree, appareil: ap.id, appareilNom: ap.nom || '?', n: n });
+  return n;
+}
 function bilanRecords(night) {
   var map = {};
   recs(night).forEach(function (r) { map[r.id] = r; });
@@ -692,6 +697,132 @@ function exportCsv(night) {
   var blob = new Blob(['﻿' + L.join('\r\n')], { type: 'text/csv;charset=utf-8' });
   saveBlob(blob, 'bilan_chlorophylle_' + night + '.csv'); toast('Bilan CSV téléchargé');
 }
+
+/* ---------- Envoi des ventes sur GitHub (uniquement à la demande) ----------
+   Dépôt privé des ventes, dossier de cette caisse. Jeton GitHub des CAISSES (même clé et même phrase de passe que
+   la Caisse Bar et la Caisse Sapins), intégré CHIFFRÉ (AES-GCM 256, PBKDF2-SHA256). Déverrouillé une fois par appareil.
+   Rien n'est envoyé sans un appui sur « Envoyer ». */
+var GH_REPO = 'scraper147/ventes';   // vide = fonction masquée
+var GH_DOSSIER = 'chlorophylle';     // dossier de cette caisse dans le dépôt des ventes
+var CLE_CHIFFREE = {"v":1,"kdf":"PBKDF2-SHA256","iter":600000,"salt":"5IZtB3dQO9ai0MwpOlomjg==","iv":"86amDE8FvOCiCDGl","data":"wOVUYuUolCQQadXsUb0ROhr0jWbh4xUYwGzesbv/g+vYObhfjXzhgVcZagBTguF0pvFyOU+HmRJZdfwh2Iz6obVMBltBCbmY7uh2G+TLtgbnHsfdtD/X2bXPdRnYoP1uJwnCOwc0nXpq8TIEmw=="};
+var GH_KEY = STORE_KEY + '-github';
+var GH = {};
+try { GH = JSON.parse(localStorage.getItem(GH_KEY)) || {}; } catch (e) { GH = {}; }
+if (!GH.envois) GH.envois = {};
+function saveGh() { try { localStorage.setItem(GH_KEY, JSON.stringify(GH)); return true; } catch (e) { return false; } }
+function ghConfigured() { return !!(GH_REPO && CLE_CHIFFREE); }
+function ghReady() { return ghConfigured() && !!GH.token; }
+function normPass(p) { return String(p || '').normalize('NFC').trim().replace(/\s+/g, ' ').toLowerCase(); }
+function b64d(str) { var s = atob(str), a = new Uint8Array(s.length); for (var i = 0; i < s.length; i++) a[i] = s.charCodeAt(i); return a; }
+function decryptToken(blob, pass) {
+  return crypto.subtle.importKey('raw', new TextEncoder().encode(normPass(pass)), 'PBKDF2', false, ['deriveKey']).then(function (base) {
+    return crypto.subtle.deriveKey({ name: 'PBKDF2', salt: b64d(blob.salt), iterations: blob.iter, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+  }).then(function (k) { return crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64d(blob.iv) }, k, b64d(blob.data)); })
+    .then(function (pt) { return new TextDecoder().decode(pt).trim(); });
+}
+function ghApi(method, url, body) {
+  return fetch('https://api.github.com' + url, { method: method, cache: 'no-store',
+    headers: { 'Authorization': 'Bearer ' + GH.token, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' },
+    body: body ? JSON.stringify(body) : undefined });
+}
+function ghError(status) {
+  if (status === 0) return 'Pas de connexion internet. Réessayez quand l’appareil a du réseau.';
+  if (status === 401) return 'GitHub refuse le jeton : il a expiré ou a été révoqué. Une nouvelle clé doit être installée dans la caisse.';
+  if (status === 403) return 'Accès refusé : le jeton n’a pas le droit d’écrire dans le dépôt des ventes.';
+  if (status === 404) return 'Dépôt des ventes introuvable, ou le jeton n’y a pas accès.';
+  if (status === 422) return 'GitHub a refusé le fichier.';
+  return 'Erreur GitHub (code ' + status + ').';
+}
+function b64utf8(s) { return btoa(unescape(encodeURIComponent(s))); }
+function utf8b64(s) { return decodeURIComponent(escape(atob(String(s).replace(/\s/g, '')))); }
+function ghUrl(path) { return '/repos/' + GH_REPO + '/contents/' + path.split('/').map(encodeURIComponent).join('/'); }
+/* chlorophylle/AAAA-MM-JJ_<nom de l'appareil>_<id appareil>.json : un fichier par appareil et par soirée, un renvoi le remplace */
+function ghPath(night) { var n = slug(DEV.nom || '').slice(0, 24); return GH_DOSSIER + '/' + night + '_' + (n ? n + '_' : '') + DEV.id + '.json'; }
+async function ghSend(night) {
+  if (S.ghBusy || !ghReady()) return;
+  night = night || tonight();
+  S.ghBusy = night; S.menu = false; render();
+  var path = ghPath(night), url = ghUrl(path);
+  var body = { message: 'Chlorophylle Night, soirée du ' + frDate(night) + ' (' + devName() + ', appareil ' + DEV.id + ')',
+               content: b64utf8(JSON.stringify(nightFile(night), null, 2)) };
+  try {
+    // ancien fichier de cet appareil sous un autre nom (appareil renommé) : on le supprime pour ne pas compter deux fois
+    var old = GH.chemins && GH.chemins[night];
+    for (var essai = 0; essai < 2; essai++) {
+      var g = await ghApi('GET', url);
+      if (g.ok) body.sha = (await g.json()).sha; else if (g.status === 404) delete body.sha; else throw g.status;
+      var r = await ghApi('PUT', url, body);
+      if (r.ok) break;
+      if ((r.status === 409 || r.status === 422) && essai === 0) continue; // fichier modifié entre-temps : on relit et on réessaie
+      throw r.status;
+    }
+    if (old && old !== path) {
+      try { var go = await ghApi('GET', ghUrl(old)); if (go.ok) await ghApi('DELETE', ghUrl(old), { message: 'Renommage de l’appareil ' + DEV.id, sha: (await go.json()).sha }); } catch (e) {}
+    }
+    GH.envois[night] = isoLocal(new Date()); GH.chemins = GH.chemins || {}; GH.chemins[night] = path; saveGh();
+    S.exported[night] = true; persist();
+    toast('Envoyé sur GitHub à ' + hhmm(GH.envois[night]) + ' : ' + path, 5000);
+  } catch (e) {
+    S.ghResult = { titre: 'Envoi impossible', text: ghError(typeof e === 'number' ? e : 0) }; S.modal = 'ghres';
+  } finally { S.ghBusy = null; render(); }
+}
+/* Bilan : charge depuis GitHub les fichiers des AUTRES appareils pour la soirée affichée */
+async function ghLoad(night) {
+  if (S.ghBusy || !ghReady()) return;
+  S.ghBusy = 'load'; render();
+  try {
+    var r = await ghApi('GET', ghUrl(GH_DOSSIER));
+    if (r.status === 404) throw 'vide';
+    if (!r.ok) throw r.status;
+    var list = (await r.json()).filter(function (f) { return f.type === 'file' && f.name.indexOf(night + '_') === 0 && /\.json$/.test(f.name); });
+    var n = 0, recsN = 0, mine = 0;
+    for (var i = 0; i < list.length; i++) {
+      var fr = await ghApi('GET', ghUrl(list[i].path));
+      if (!fr.ok) throw fr.status;
+      var meta = await fr.json(), j;
+      try { j = JSON.parse(utf8b64(meta.content)); } catch (e) { continue; }
+      if (j.format !== FORMAT_SOIREE || !Array.isArray(j.enregistrements)) continue;
+      if (j.appareil && j.appareil.id === DEV.id) { mine++; continue; }
+      recsN += importNight(j, list[i].name); n++;
+    }
+    S.bilanNight = night;
+    toast(n ? n + ' fichier' + (n > 1 ? 's' : '') + ' chargé' + (n > 1 ? 's' : '') + ' depuis GitHub (' + recsN + ' enregistrements)' : 'Aucun fichier d’un autre appareil pour la soirée du ' + frDate(night) + ' sur GitHub', 6000);
+  } catch (e) {
+    if (e === 'vide') toast('Aucun fichier sur GitHub dans le dossier « ' + GH_DOSSIER + ' »', 6000);
+    else { S.ghResult = { titre: 'Chargement impossible', text: ghError(typeof e === 'number' ? e : 0).replace('d’écrire dans', 'de lire'), lecture: true }; S.modal = 'ghres'; }
+  } finally { S.ghBusy = null; render(); }
+}
+async function ghUnlock() {
+  if (!normPass(S.ghPass)) { S.ghMsg = { ok: false, text: 'Saisissez la phrase de passe.' }; render(); return; }
+  S.ghMsg = { ok: null, text: 'Déverrouillage…' }; render();
+  var token;
+  try { token = await decryptToken(CLE_CHIFFREE, S.ghPass); }
+  catch (e) { S.ghMsg = { ok: false, text: 'Phrase de passe incorrecte.' }; S.ghPass = ''; render(); return; }
+  GH.token = token; saveGh(); S.ghPass = '';
+  S.ghMsg = { ok: true, text: 'Déverrouillé sur cet appareil. Vérification de l’accès au dépôt…' }; render();
+  await ghTest();
+  if (S.ghPending && S.ghMsg && S.ghMsg.ok) { var d = S.ghPending; S.ghPending = null; S.modal = S.ghBack || null; S.ghBack = null; if (d === 'load') ghLoad(S.bilanNight || tonight()); else ghSend(d); }
+}
+async function ghTest() {
+  if (!ghReady()) return;
+  try {
+    var r = await ghApi('GET', '/repos/' + GH_REPO);
+    if (!r.ok) throw r.status;
+    var d = await r.json();
+    S.ghMsg = { ok: true, text: 'Dépôt « ' + d.full_name + ' » accessible' + (d.private ? ' (privé)' : ' — attention : ce dépôt est PUBLIC') + '. Les fichiers vont dans le dossier « ' + GH_DOSSIER + ' ».' };
+  } catch (e) { S.ghMsg = { ok: false, text: ghError(typeof e === 'number' ? e : 0) }; }
+  render();
+}
+Object.assign(A, {
+  openGh: function () { S.menu = false; S.modal = 'ghcfg'; S.ghPass = ''; S.ghMsg = null; S.ghPending = null; S.ghBack = null; },
+  ghUnlock: function () { ghUnlock(); },
+  ghAsk: function (d) { S.menu = false; S.ghPending = d; S.ghBack = S.modal; S.modal = 'ghcfg'; S.ghPass = '';
+    S.ghMsg = { ok: null, text: d === 'load' ? 'Pour charger les fichiers des autres appareils, déverrouillez d’abord GitHub sur cet appareil.' : 'Pour envoyer la soirée du ' + frDate(d) + ', déverrouillez d’abord l’envoi sur cet appareil.' }; },
+  ghTest: function () { S.ghMsg = { ok: null, text: 'Test en cours…' }; ghTest(); },
+  ghLock: function () { delete GH.token; saveGh(); S.ghMsg = null; S.modal = null; toast('Envoi sur GitHub verrouillé sur cet appareil'); },
+  ghSend: function (d) { if (ghReady()) ghSend(d || tonight()); else A.ghAsk(d || tonight()); },
+  ghLoad: function () { if (ghReady()) ghLoad(S.bilanNight || tonight()); else A.ghAsk('load'); }
+});
 
 /* ---------- Icônes ---------- */
 function svg(p, s) { return '<svg viewBox="0 0 24 24" width="' + (s || 26) + '" height="' + (s || 26) + '" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + '</svg>'; }
@@ -730,16 +861,15 @@ function vHome() {
   };
   return '<div class="home">' +
     '<img class="logo" src="' + LOGO_FULL + '" alt="Chlorophylle Night by ’Xa">' +
-    '<div class="night">' + nightLabel(tonight()).toUpperCase() + ' · ' + esc(devName()) + '</div>' +
     (S.usedPct >= 80 ? vStorageBar() : '') +
     '<div class="ctiles">' + Object.keys(CAISSES).map(function (c) {
       return '<button class="ctile" data-caisse="' + c + '" data-a="open" data-v="' + c + '">' + svg(I[c], 40) +
         '<div style="display:flex;flex-direction:column;gap:6px"><span class="t">' + CAISSES[c].nom + '</span><span class="d">' + CAISSES[c].desc + '</span><span class="k">' + k[c] + '</span></div></button>';
     }).join('') + '</div>' +
-    '<div class="homebtns"><button class="btn" data-a="bilan">' + svg(I.chart, 20).replace('<svg', '<svg style="vertical-align:-4px;margin-right:8px"') + 'Bilan de la soirée</button></div>' +
     '<div class="homelinks"><span class="sub">' + esc(catalogueLabel(CATALOGUE)) + '</span>' +
       '<button class="btn-link" data-a="device">Nom de l’appareil</button>' +
-      (PHONE ? '' : '<button class="btn-link" data-a="fullscreen">Plein écran</button>') + '</div>' +
+      (ghConfigured() ? '<button class="btn-link" data-a="openGh">Envoi GitHub' + (ghReady() ? ' (déverrouillé)' : '') + '</button>' : '') +
+      '</div>' +
     '</div>';
 }
 
@@ -898,8 +1028,10 @@ function vBilan() {
     (nights.length > 1 ? '<div class="hdays">' + nights.map(function (d) { return '<button class="choice' + (d === night ? ' on' : '') + '" data-a="bilanNight" data-v="' + d + '">' + (d === tonight() ? 'Ce soir' : frDate(d).slice(0, 5)) + '</button>'; }).join('') + '</div>' : '') + '</div>';
   html += '<div class="srcs">Données : <strong>cet appareil (' + esc(devName()) + ')</strong>' +
     (files.length ? ' + ' + files.map(function (f) { return '<strong>' + esc(f.appareilNom) + '</strong> (' + f.n + ')'; }).join(', ') : '') +
-    '. Pour le bilan complet, exportez la soirée sur chaque appareil (menu ⋮) et importez les fichiers ici.' +
-    '<div class="actions" style="justify-content:flex-start;margin-top:10px"><button class="btn" data-a="importFiles">Importer des fichiers d’autres appareils</button>' +
+    '. Pour le bilan complet, chaque appareil envoie sa soirée sur GitHub (menu ⋮), puis « Charger depuis GitHub » ici. Sans réseau : exporter les fichiers et les importer.' +
+    '<div class="actions" style="justify-content:flex-start;margin-top:10px">' +
+    (ghConfigured() ? '<button class="btn btn-primary" data-a="ghLoad"' + (S.ghBusy ? ' disabled' : '') + '>' + (S.ghBusy === 'load' ? 'Chargement…' : 'Charger depuis GitHub') + '</button>' : '') +
+    '<button class="btn" data-a="importFiles">Importer des fichiers</button>' +
     (S.importFiles.length ? '<button class="btn btn-danger" data-a="clearImports">Retirer les imports</button>' : '') +
     '<button class="btn" data-a="csv">Exporter le bilan (CSV)</button></div></div>';
 
@@ -955,11 +1087,13 @@ function vMenu() {
   function tile(a, icon, label, sub, v) { return '<button class="mtile" data-a="' + a + '"' + (v ? ' data-v="' + v + '"' : '') + '>' + svg(icon) + '<span class="mt-l">' + label + '</span>' + (sub ? '<span class="mt-s">' + sub + '</span>' : '') + '</button>'; }
   return '<div class="menu-back" data-a="toggleMenu"></div><div class="menu" role="menu">' +
     '<div class="mgroup">Soirée</div><div class="mgrid">' +
+      (ghConfigured() ? tile('ghSend', I.up, S.ghBusy && S.ghBusy !== 'load' ? 'Envoi en cours…' : 'Envoyer sur GitHub', ghReady() ? (GH.envois[tonight()] ? 'Dernier envoi à ' + hhmm(GH.envois[tonight()]) : 'Soirée en cours, dépôt « ventes »') : 'À déverrouiller une fois') : '') +
       tile('download', I.down, 'Exporter la soirée', 'Fichier des 3 caisses de cet appareil') +
       tile('showDays', I.cal, 'Soirées enregistrées', 'Télécharger, effacer, mémoire') +
       tile('bilan', I.chart, 'Bilan de la soirée', 'Analyse, import des autres appareils') + '</div>' +
     '<div class="mgroup">Appareil</div><div class="mgrid">' +
       tile('checkCat', I.refresh, S.catLoading ? 'Vérification…' : 'Vérifier le catalogue', S.siteUpdate ? 'Mise à jour disponible' : 'Installé : v' + CATALOGUE.version) +
+      (ghConfigured() ? tile('openGh', I.up, 'GitHub', ghReady() ? 'Déverrouillé · gérer' : 'Verrouillé · déverrouiller') : '') +
       tile('device', I.tablet, 'Nom de l’appareil', devName()) +
       tile('goHome', I.home, 'Accueil', 'Choisir une autre caisse') + '</div>' +
     '<div class="meta">' + esc(catalogueLabel(CATALOGUE)) + ' · appareil ' + esc(DEV.id) + '</div></div>';
@@ -1044,6 +1178,25 @@ function vDevice() {
     '<div class="actions"><button class="btn" data-a="close">Annuler</button><button class="btn btn-primary" data-a="saveDevice">Enregistrer</button></div></div></div>';
 }
 
+function vGhCfg() {
+  var m = S.ghMsg;
+  var body = ghReady()
+    ? '<div class="sub" style="font-size:15px;line-height:1.5">L’envoi est déverrouillé sur cet appareil (dépôt <strong>' + esc(GH_REPO) + '</strong>, dossier <strong>' + esc(GH_DOSSIER) + '</strong>, appareil <strong>' + esc(devName()) + '</strong>). Rien ne part sans un appui sur « Envoyer ». Verrouiller efface le jeton de cet appareil.</div>'
+    : '<div class="sub" style="font-size:15px;line-height:1.5">Saisissez la <strong>phrase de passe des caisses</strong> (la même que pour la Caisse Bar et la Caisse Sapins). Elle n’est demandée qu’une fois sur cet appareil et n’est jamais enregistrée.</div>' +
+      '<label class="f">Phrase de passe<input type="password" data-f="ghPass" value="' + esc(S.ghPass || '') + '" autocomplete="off" autocapitalize="none" spellcheck="false"></label>';
+  return '<div class="overlay"><div class="modal" style="width:min(600px,96vw)"><h2>Envoi des ventes sur GitHub</h2>' + body +
+    (m ? '<div class="result' + (m.ok === false ? ' ko' : '') + '" style="display:block;font-size:15px;line-height:1.45">' + esc(m.text) + '</div>' : '') +
+    '<div class="actions"><button class="btn" data-a="close">Fermer</button>' +
+      (ghReady() ? '<button class="btn btn-danger" data-a="ghLock">Verrouiller cet appareil</button><button class="btn btn-primary" data-a="ghTest">Tester l’accès</button>'
+                 : '<button class="btn btn-primary" data-a="ghUnlock">Déverrouiller</button>') + '</div></div></div>';
+}
+function vGhRes() {
+  var r = S.ghResult || {};
+  return '<div class="overlay"><div class="modal" style="width:min(520px,96vw)"><h2 style="color:var(--red)">' + esc(r.titre || 'Envoi impossible') + '</h2>' +
+    '<div style="font-size:17px;line-height:1.5">' + esc(r.text || '') + '</div>' +
+    '<div class="sub">' + (r.lecture ? 'Vous pouvez réessayer plus tard ou importer les fichiers exportés.' : 'Les données restent enregistrées sur l’appareil. Réessayez plus tard ou utilisez l’export en fichier.') + '</div>' +
+    '<div class="actions"><button class="btn btn-primary" data-a="close">OK</button></div></div></div>';
+}
 function vStorageBar() {
   if (S.usedPct < 80) return '';
   return '<button class="memwarn" data-a="showDays">⚠ Mémoire de l’appareil pleine à ' + S.usedPct + ' % : touchez ici pour effacer les anciennes soirées exportées</button>';
@@ -1060,16 +1213,17 @@ function vDays() {
     var R = summarize(S.nights[d]), isT = d === tonight();
     return '<div class="row" style="padding:12px 4px;border-bottom:1px solid var(--soft);flex-wrap:wrap">' +
       '<div style="display:flex;flex-direction:column;gap:2px"><strong style="font-size:18px">' + nightLabel(d) + (isT ? ' <span class="sub">(ce soir)</span>' : '') + '</strong>' +
-      '<span class="sub">' + money(R.recette) + ' · ' + (R.entrees.personnes + R.entrees.preventes) + ' entrées · ' + R.tickets.cases + ' cases vendues · ' + R.boissons.commandes + ' commandes</span></div>' +
+      '<span class="sub">' + (GH.envois[d] ? 'Envoyée sur GitHub le ' + frDate(GH.envois[d]).slice(0, 5) + ' à ' + hhmm(GH.envois[d]) + ' · ' : '') + money(R.recette) + ' · ' + (R.entrees.personnes + R.entrees.preventes) + ' entrées · ' + R.tickets.cases + ' cases vendues · ' + R.boissons.commandes + ' commandes</span></div>' +
       '<div class="dayact">' + (isT ? '' : !S.exported[d] ? '<span class="sub">Pas encore exportée</span>'
         : S.confirmDel === d ? '<button class="btn btn-danger" data-a="delDay" data-v="' + d + '" style="border:1px solid var(--red)">Confirmer</button>'
         : '<button class="btn btn-danger" data-a="askDel" data-v="' + d + '">Effacer</button>') +
+      (ghConfigured() ? '<button class="btn" data-a="ghSend" data-v="' + d + '"' + (S.ghBusy ? ' disabled' : '') + '>' + (S.ghBusy === d ? 'Envoi…' : GH.envois[d] ? 'Renvoyer sur GitHub' : 'Envoyer sur GitHub') + '</button>' : '') +
       '<button class="btn" data-a="download" data-v="' + d + '">Télécharger</button></div></div>';
   }).join('');
   return '<div class="overlay"><div class="modal" style="width:min(680px,96vw);max-height:90%"><div class="row"><h2>Soirées enregistrées</h2><button class="btn" data-a="close">Fermer</button></div>' +
     '<div class="memgauge"><div class="row"><span>Mémoire de l’appareil</span><strong' + (S.usedPct >= 80 ? ' style="color:var(--red)"' : '') + '>' + storageMo(storageUsed()) + ' sur ' + storageMo(STORAGE_LIMIT) + ' (' + S.usedPct + ' %)</strong></div>' +
     '<div class="bar"><i style="width:' + Math.min(100, S.usedPct) + '%"></i></div></div>' +
-    '<div class="sub">Une soirée ne peut être effacée qu’après avoir été téléchargée. La soirée en cours ne peut pas être effacée.</div>' +
+    '<div class="sub">Une soirée ne peut être effacée qu’après avoir été téléchargée ou envoyée sur GitHub. La soirée en cours ne peut pas être effacée.</div>' +
     '<div>' + (rows || '<div class="empty">Aucune donnée enregistrée</div>') + '</div></div></div>';
 }
 function vImport() {
@@ -1093,7 +1247,7 @@ function render() {
   var act = document.activeElement, f = act && act.dataset ? act.dataset.f : null, pos = f ? act.selectionStart : null;
   if (VIDEO.parentNode !== CAMHOLD) CAMHOLD.appendChild(VIDEO); // la vidéo survit au rendu
   var html = S.screen === 'home' ? vHome() : S.screen === 'bilan' ? vBilan() : vPos();
-  var M = { pay: vPay, scan: vScan, okB: vOkB, cancel: vCancel, device: vDevice, storage: vStorage, days: vDays, import: vImport };
+  var M = { ghcfg: vGhCfg, ghres: vGhRes, pay: vPay, scan: vScan, okB: vOkB, cancel: vCancel, device: vDevice, storage: vStorage, days: vDays, import: vImport };
   if (S.storageMsg && !S.modal) S.modal = 'storage';
   if (S.modal && M[S.modal]) html += M[S.modal]();
   if (S.toast) html += '<div class="toast">' + esc(S.toast) + '</div>';
