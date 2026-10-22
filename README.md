@@ -78,7 +78,12 @@ Le catalogue (prix des entrées, prix de la case et nombre de cases par carte, b
 
 ## Mettre à jour l'app
 
-Remplacer les fichiers sur GitHub, **et augmenter le numéro de cache dans `sw.js`** (actuellement `PREFIX + 'v11'`). Les appareils prennent la nouvelle version à la prochaine ouverture avec réseau.
+Remplacer les fichiers sur GitHub, **et augmenter le numéro de cache dans `sw.js`** (actuellement `PREFIX + 'v12'`) ainsi que `APP_VERSION` dans `index.html` (même numéro).
+
+- Le numéro de version s'affiche en bas de l'accueil (« App v12 · … ») : c'est le moyen de vérifier qu'un appareil a bien la dernière version.
+- GitHub Pages met 1 à 2 minutes à publier après le commit.
+- Depuis la v12, l'appareil prend la nouvelle version à l'ouverture de l'app avec réseau et se recharge tout seul (sur l'accueil, jamais pendant une vente).
+- Si un appareil reste sur une ancienne version : fermer complètement l'app (balayer dans les apps récentes), attendre une dizaine de minutes, la rouvrir avec réseau, puis la fermer et rouvrir encore une fois. **Ne jamais effacer les données de Chrome** pour forcer la mise à jour : les ventes de l'appareil seraient perdues.
 
 ## Bonnes pratiques
 
