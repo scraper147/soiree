@@ -2,7 +2,7 @@
    Avec réseau : dernière version publiée (gardée en cache). Sans réseau : version en cache. */
 // Préfixe propre à CETTE caisse : plusieurs caisses partagent l'adresse <compte>.github.io.
 var PREFIX = 'caisse-chlorophylle-';
-var CACHE = PREFIX + 'v12';
+var CACHE = PREFIX + 'v13';
 // catalogue.json est publié par l'app Admin : il n'est pas pré-chargé (il est mis en cache à la première lecture)
 var FILES = ['./', './index.html', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png'];
