@@ -51,11 +51,9 @@ Ensuite l'app fonctionne sans internet.
 Dans chaque cas d'alerte : **Refuser** ou **Laisser entrer quand même** (l'entrée est alors marquée dans l'historique et dans les fichiers envoyés : doublon, QR non reconnu ou hors liste).
 Le code du billet peut aussi être saisi à la main (code seul ou adresse complète).
 
-**Liste des billets vendus** (facultative, menu **⋮ → Liste des préventes**, ou lien dans la fenêtre de scan) :
-- déposer l'export de la billetterie (CSV, JSON, texte…) dans le dossier **`preventes/`** du dépôt privé `scraper147/ventes`, puis **Charger depuis GitHub** ; ou **Importer un fichier** directement sur l'appareil ;
-- tous les codes de 32 caractères trouvés dans les fichiers sont repris, quel que soit le format ;
-- la liste reste sur l'appareil (fonctionne hors ligne) ; la recharger si des préventes ont été vendues depuis ;
-- **ne jamais mettre cette liste dans le dépôt public de l'app** : elle permettrait de fabriquer de faux billets valides.
+**Liste des billets vendus** : pas encore en place (elle sera intégrée plus tard). En attendant, seuls le format et les doublons sont contrôlés.
+
+**Phase de test** : menu **⋮ → TEST · Effacer les préventes** efface toutes les préventes scannées sur l'appareil, pour pouvoir rescanner les mêmes QR codes. Les entrées payantes, tickets et commandes ne sont pas touchés. **À retirer avant la soirée** (`TEST_EFFACER_PREVENTES = false` dans `index.html`).
 
 ## Envoi des ventes sur GitHub (dépôt privé `scraper147/ventes`)
 
@@ -80,7 +78,7 @@ Le catalogue (prix des entrées, prix de la case et nombre de cases par carte, b
 
 ## Mettre à jour l'app
 
-Remplacer les fichiers sur GitHub, **et augmenter le numéro de cache dans `sw.js`** (actuellement `PREFIX + 'v10'`). Les appareils prennent la nouvelle version à la prochaine ouverture avec réseau.
+Remplacer les fichiers sur GitHub, **et augmenter le numéro de cache dans `sw.js`** (actuellement `PREFIX + 'v11'`). Les appareils prennent la nouvelle version à la prochaine ouverture avec réseau.
 
 ## Bonnes pratiques
 

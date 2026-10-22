@@ -542,11 +542,26 @@ function recordPrevente(code, anomalie) {
 }
 
 /* ---------- Actions ---------- */
+/* TEST UNIQUEMENT : bouton du menu qui efface les préventes scannées pour enchaîner les essais. Mettre false avant la soirée. */
+var TEST_EFFACER_PREVENTES = true;
+function countQ() { var n = 0; Object.keys(S.nights).forEach(function (d) { (S.nights[d] || []).forEach(function (r) { if (r.type === 'prevente') n++; }); }); return n; }
 var A = {
   open: function (c) { S.caisse = c; S.screen = 'pos'; S.tab = 'caisse'; S.menu = false; S.cartOpen = false; persist(); },
   caisse: function (c) { S.caisse = c; S.tab = S.tab === 'hist' ? 'hist' : 'caisse'; S.cartOpen = false; S.menu = false; S.histNight = null; persist(); },
   goHome: function () { S.screen = 'home'; S.menu = false; if (S.siteUpdate && !S.modal) { S.importing = S.siteUpdate; S.modal = 'import'; } },
   tab: function (t) { S.tab = t; S.menu = false; S.cartOpen = false; S.histNight = null; },
+  testDelQ: function () { S.menu = false; S.modal = 'testDelQ'; },
+  testDelQGo: function () {
+    var n = countQ();
+    Object.keys(S.nights).forEach(function (d) {
+      var before = S.nights[d].length;
+      S.nights[d] = S.nights[d].filter(function (r) { return r.type !== 'prevente'; });
+      if (S.nights[d].length !== before) delete S.exported[d];
+      if (!S.nights[d].length) delete S.nights[d];
+    });
+    CAM.ignore = null; S.modal = null;
+    if (persist()) toast(plural(n, 'prévente') + ' effacée' + (n > 1 ? 's' : '') + ' (test)');
+  },
   bilan: function () { if (S.screen !== 'bilan') S.prevScreen = S.screen; S.screen = 'bilan'; S.menu = false; S.bilanNight = null; },
   bilanBack: function () { S.screen = S.prevScreen === 'pos' ? 'pos' : 'home'; },
   bilanNight: function (n) { S.bilanNight = n; },
@@ -1209,7 +1224,8 @@ function vMenu() {
       tile('showDays', I.cal, 'Soirées enregistrées', 'Télécharger, effacer, mémoire') + '</div>' +
     '<div class="mgroup">Appareil</div><div class="mgrid">' +
       tile('checkCat', I.refresh, S.catLoading ? 'Vérification…' : 'Vérifier le catalogue', S.siteUpdate ? 'Mise à jour disponible' : 'Installé : v' + CATALOGUE.version) +
-      tile('plist', I.qr, 'Liste des préventes', PLIST.codes ? plural(PLIST.codes.length, 'billet') : 'Non chargée') +
+      /* TEST UNIQUEMENT : à retirer avant la soirée (TEST_EFFACER_PREVENTES = false) */
+      (TEST_EFFACER_PREVENTES ? tile('testDelQ', I.qr, 'TEST · Effacer les préventes', plural(countQ(), 'prévente') + ' scannée' + (countQ() > 1 ? 's' : '') + ' sur l\u2019appareil') : '') +
       tile('device', I.tablet, 'Nom de l’appareil', devName()) +
       tile('goHome', I.home, 'Accueil', 'Choisir une autre caisse') + '</div>' +
     '<div class="meta">' + esc(catalogueLabel(CATALOGUE)) + ' · appareil ' + esc(DEV.id) + '</div></div>';
@@ -1260,7 +1276,7 @@ function vScan() {
     (acts ? '<div class="actions">' + acts + '</div>' : '') +
     '<div style="display:flex;gap:10px;align-items:flex-end"><label class="f" style="flex:1">Ou saisir le code du billet<input type="text" data-f="scanCode" value="' + esc(S.scanCode || '') + '" placeholder="code de la prévente" autocomplete="off" autocapitalize="none" spellcheck="false"></label>' +
     '<button class="btn" data-a="scanManual"' + ((S.scanCode || '').trim() && s.state !== 'dup' ? '' : ' disabled') + '>Valider</button></div>' +
-    '<div class="row" style="padding:10px 14px;border:1px solid var(--line2);border-radius:12px;flex-wrap:wrap"><span class="sub" style="font-weight:700">' + plistLabel() + '</span><button class="btn-link" data-a="plist" style="color:var(--gold-l)">Liste des préventes</button></div>' +
+    '<div class="row" style="padding:10px 14px;border:1px solid var(--line2);border-radius:12px;flex-wrap:wrap"><span class="sub" style="font-weight:700">' + plistLabel() + '</span></div>' +
     '<div class="sub">Le contrôle des doublons porte sur les préventes scannées sur <strong>cet appareil</strong>. Avec deux appareils à l’entrée, un même billet pourrait passer une fois sur chacun.</div></div></div>';
 }
 
@@ -1317,6 +1333,13 @@ function vGhRes() {
     '<div class="sub">' + (r.lecture ? 'Vous pouvez réessayer plus tard ou importer les fichiers exportés.' : 'Les données restent enregistrées sur l’appareil. Réessayez plus tard ou utilisez l’export en fichier.') + '</div>' +
     '<div class="actions"><button class="btn btn-primary" data-a="close">OK</button></div></div></div>';
 }
+function vTestDelQ() {
+  var n = countQ();
+  return '<div class="overlay"><div class="modal" style="width:min(520px,96vw)"><h2 style="color:var(--red)">TEST · Effacer les préventes scannées</h2>' +
+    '<div style="font-size:17px;line-height:1.5">Efface <strong>' + plural(n, 'prévente') + '</strong> enregistrée' + (n > 1 ? 's' : '') + ' sur cet appareil (toutes les soirées). Les mêmes QR codes pourront être scannés à nouveau.</div>' +
+    '<div class="sub">Fonction de test : les entrées payantes, tickets et commandes ne sont pas touchés. Les préventes effacées disparaissent de l\u2019historique et des prochains envois. À retirer avant la soirée.</div>' +
+    '<div class="actions"><button class="btn" data-a="close">Annuler</button><button class="btn" data-a="testDelQGo" style="background:var(--red);border-color:var(--red);color:#fff"' + (n ? '' : ' disabled') + '>Effacer ' + plural(n, 'prévente') + '</button></div></div></div>';
+}
 function vStorageBar() {
   if (S.usedPct < 80) return '';
   return '<button class="memwarn" data-a="showDays">⚠ Mémoire de l’appareil pleine à ' + S.usedPct + ' % : touchez ici pour effacer les anciennes soirées exportées</button>';
@@ -1367,7 +1390,7 @@ function render() {
   var act = document.activeElement, f = act && act.dataset ? act.dataset.f : null, pos = f ? act.selectionStart : null;
   if (VIDEO.parentNode !== CAMHOLD) CAMHOLD.appendChild(VIDEO); // la vidéo survit au rendu
   var html = S.screen === 'home' ? vHome() : S.screen === 'bilan' ? vBilan() : vPos();
-  var M = { plist: vPlist, ghcfg: vGhCfg, ghres: vGhRes, pay: vPay, scan: vScan, okB: vOkB, cancel: vCancel, device: vDevice, storage: vStorage, days: vDays, import: vImport };
+  var M = { testDelQ: vTestDelQ, plist: vPlist, ghcfg: vGhCfg, ghres: vGhRes, pay: vPay, scan: vScan, okB: vOkB, cancel: vCancel, device: vDevice, storage: vStorage, days: vDays, import: vImport };
   if (S.storageMsg && !S.modal) S.modal = 'storage';
   if (S.modal && M[S.modal]) html += M[S.modal]();
   if (S.toast) html += '<div class="toast">' + esc(S.toast) + '</div>';
