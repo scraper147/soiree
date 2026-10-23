@@ -65,6 +65,12 @@ input:focus{outline:2px solid var(--acc);outline-offset:1px}
 .main{flex:1;display:flex;flex-direction:column;gap:16px;padding:16px 18px;min-width:0;overflow-y:auto}
 .strip{display:flex;flex-wrap:wrap;gap:10px}
 .stat{flex:1;min-width:130px;border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:10px 14px;display:flex;flex-direction:column;gap:2px}
+.statbtn{text-align:left;font:inherit;color:inherit;cursor:pointer;border-color:var(--acc)}
+.statbtn:active{background:var(--soft)}
+.qrow{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 4px;border-bottom:1px solid var(--soft)}
+.qrow .h{font-size:17px;font-weight:800}
+.qrow code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:15px;word-break:break-all;user-select:text}
+.qrow.cancelled .h,.qrow.cancelled code{opacity:.45;text-decoration:line-through}
 .stat b{font-size:26px;font-weight:800;color:var(--acc)}
 .stat span{font-size:13px;color:var(--muted);font-weight:700}
 
@@ -295,7 +301,7 @@ var LOGO_S = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMDAgQ
 /* Catalogue intégré : utilisé tant que catalogue.json n'a pas pu être chargé (premier lancement sans réseau, aperçu). */
 var DEFAULT_CAT = {"format": "chlorophylle-caisse/catalogue", "formatVersion": 1, "version": 2, "date": "2026-10-22", "soiree": "Chlorophylle Night", "entrees": [{"id": "entree", "libelle": "Entrée", "prix": 15, "ordre": 1, "actif": true}, {"id": "vip", "libelle": "Table VIP", "prix": 300, "ordre": 2, "actif": true}], "tickets": {"prixCase": 3, "casesParCarte": 18}, "prevente": {"modele": "^https://chlorophylle-night-by-xa\\.be/Chloropylle/admin/display_ev\\.php\\?q=([0-9a-fA-F]{32})&action=control$", "description": "QR officiels : https://chlorophylle-night-by-xa.be/Chloropylle/admin/display_ev.php?q=<32 caractères 0-9 a-f>&action=control (le groupe entre parenthèses est le code du billet)"}, "boissons": [{"id": "softs", "nom": "Softs", "ordre": 1, "produits": [{"id": "eau-plate", "libelle": "Eau plate", "format": "verre", "cases": 1, "ordre": 1, "actif": true}, {"id": "eau-petillante", "libelle": "Eau pétillante", "format": "verre", "cases": 1, "ordre": 2, "actif": true}, {"id": "coca", "libelle": "Coca-Cola", "format": "verre", "cases": 1, "ordre": 3, "actif": true}, {"id": "redbull", "libelle": "Red Bull", "format": "verre", "cases": 1, "ordre": 4, "actif": true}, {"id": "fanta", "libelle": "Fanta", "format": "verre", "cases": 1, "ordre": 5, "actif": true}, {"id": "sprite", "libelle": "Sprite", "format": "verre", "cases": 1, "ordre": 6, "actif": true}, {"id": "icetea", "libelle": "Ice Tea", "format": "verre", "cases": 1, "ordre": 7, "actif": true}], "actif": true}, {"id": "bieres", "nom": "Bières", "ordre": 2, "produits": [{"id": "jupiler", "libelle": "Jupiler", "format": "verre", "cases": 1, "ordre": 1, "actif": true}, {"id": "bertin-framboise", "libelle": "Bertinchamps Framboise 4,2 %", "format": "verre", "cases": 1, "ordre": 2, "actif": true}, {"id": "bertin-hiver", "libelle": "Bertinchamps Hiver 8 %", "format": "verre", "cases": 1, "ordre": 3, "actif": true}, {"id": "bertin-passion", "libelle": "Bertinchamps Passion 0 %", "format": "verre", "cases": 2, "ordre": 4, "actif": true}, {"id": "desperados", "libelle": "Desperados", "format": "verre", "cases": 2, "ordre": 5, "actif": true}], "actif": true}, {"id": "vins", "nom": "Vins", "ordre": 3, "produits": [{"id": "vin-rouge", "libelle": "Vin rouge", "format": "verre", "cases": 2, "ordre": 1, "actif": true}, {"id": "vin-blanc", "libelle": "Vin blanc", "format": "verre", "cases": 2, "ordre": 2, "actif": true}, {"id": "vin-rose", "libelle": "Vin rosé", "format": "verre", "cases": 2, "ordre": 3, "actif": true}, {"id": "vin-rouge-btl", "libelle": "Vin rouge", "format": "bouteille", "cases": 8, "ordre": 4, "actif": true}, {"id": "vin-blanc-btl", "libelle": "Vin blanc", "format": "bouteille", "cases": 8, "ordre": 5, "actif": true}, {"id": "vin-rose-btl", "libelle": "Vin rosé", "format": "bouteille", "cases": 8, "ordre": 6, "actif": true}], "actif": true}, {"id": "alcools", "nom": "Alcools", "ordre": 4, "produits": [{"id": "jack", "libelle": "Jack Daniel's", "format": "verre", "cases": 3, "ordre": 1, "actif": true}, {"id": "greygoose", "libelle": "Grey Goose", "format": "verre", "cases": 5, "ordre": 2, "actif": true}, {"id": "eristoff-rouge", "libelle": "Eristoff rouge", "format": "verre", "cases": 3, "ordre": 3, "actif": true}, {"id": "eristoff-blanc", "libelle": "Eristoff blanc", "format": "verre", "cases": 3, "ordre": 4, "actif": true}, {"id": "bacardi", "libelle": "Bacardi blanc", "format": "verre", "cases": 3, "ordre": 5, "actif": true}, {"id": "captain", "libelle": "Captain Morgan", "format": "verre", "cases": 3, "ordre": 6, "actif": true}, {"id": "bombay", "libelle": "Bombay Sapphire", "format": "verre", "cases": 3, "ordre": 7, "actif": true}], "actif": true}, {"id": "bouteilles", "nom": "Bouteilles", "ordre": 5, "produits": [{"id": "jack-btl", "libelle": "Jack Daniel's", "format": "bouteille", "cases": 36, "ordre": 1, "actif": true}, {"id": "greygoose-btl", "libelle": "Grey Goose", "format": "bouteille", "cases": 51, "ordre": 2, "actif": true}, {"id": "eristoff-rouge-btl", "libelle": "Eristoff rouge", "format": "bouteille", "cases": 36, "ordre": 3, "actif": true}, {"id": "eristoff-blanc-btl", "libelle": "Eristoff blanc", "format": "bouteille", "cases": 36, "ordre": 4, "actif": true}, {"id": "bacardi-btl", "libelle": "Bacardi blanc", "format": "bouteille", "cases": 36, "ordre": 5, "actif": true}, {"id": "captain-btl", "libelle": "Captain Morgan", "format": "bouteille", "cases": 36, "ordre": 6, "actif": true}, {"id": "bombay-btl", "libelle": "Bombay Sapphire", "format": "bouteille", "cases": 36, "ordre": 7, "actif": true}], "actif": true}, {"id": "cocktails", "nom": "Cocktails", "ordre": 6, "produits": [{"id": "chloro", "libelle": "Chlorophylle Night", "format": "verre", "cases": 3, "ordre": 1, "actif": true}, {"id": "aperol", "libelle": "Apérol Spritz", "format": "verre", "cases": 3, "ordre": 2, "actif": true}, {"id": "stgermain", "libelle": "St-Germain Spritz", "format": "verre", "cases": 3, "ordre": 3, "actif": true}], "actif": true}, {"id": "bulles", "nom": "Bulles", "ordre": 7, "produits": [{"id": "cava", "libelle": "Cava", "format": "verre", "cases": 2, "ordre": 1, "actif": true}, {"id": "champagne", "libelle": "Champagne", "format": "verre", "cases": 4, "ordre": 2, "actif": true}, {"id": "cava-btl", "libelle": "Cava", "format": "bouteille", "cases": 10, "ordre": 3, "actif": true}, {"id": "champagne-btl", "libelle": "Champagne", "format": "bouteille", "cases": 30, "ordre": 4, "actif": true}], "actif": true}]};
 
-var APP_VERSION = 'v13'; // = numéro du cache dans sw.js
+var APP_VERSION = 'v14'; // = numéro du cache dans sw.js
 var CAT_KEY = STORE_KEY + '-catalogue';
 var DEV_KEY = STORE_KEY + '-appareil';
 var FORMAT_CAT = 'chlorophylle-caisse/catalogue';
@@ -551,6 +557,7 @@ var A = {
   caisse: function (c) { S.caisse = c; S.tab = S.tab === 'hist' ? 'hist' : 'caisse'; S.cartOpen = false; S.menu = false; S.histNight = null; persist(); },
   goHome: function () { S.screen = 'home'; S.menu = false; if (S.siteUpdate && !S.modal) { S.importing = S.siteUpdate; S.modal = 'import'; } },
   tab: function (t) { S.tab = t; S.menu = false; S.cartOpen = false; S.histNight = null; },
+  qlist: function () { S.menu = false; S.modal = 'qlist'; S.qSearch = ''; },
   testDelQ: function () { S.menu = false; S.modal = 'testDelQ'; },
   testDelQGo: function () {
     var n = countQ();
@@ -1029,7 +1036,7 @@ function vEntrees() {
   var html = '<div class="body"><div class="main">' +
     '<div class="strip"><div class="stat"><b>' + (R.entrees.personnes + R.entrees.preventes) + '</b><span>Entrées ce soir</span></div>' +
       '<div class="stat"><b>' + R.entrees.personnes + '</b><span>Payantes</span></div>' +
-      '<div class="stat"><b>' + R.entrees.preventes + '</b><span>Préventes QR</span></div>' +
+      '<button class="stat statbtn" data-a="qlist"><b>' + R.entrees.preventes + '</b><span>Préventes QR · voir la liste ›</span></button>' +
       '<div class="stat"><b>' + vip + '</b><span>Tables VIP</span></div></div>' +
     '<div class="bigtiles">' + CATALOGUE.entrees.map(function (e) {
       return '<button class="bigt" data-a="addE" data-v="' + esc(e.id) + '"><span class="m">' + esc(e.libelle) + '</span><span class="p">' + money(e.prix) + '</span></button>';
@@ -1334,6 +1341,21 @@ function vGhRes() {
     '<div class="sub">' + (r.lecture ? 'Vous pouvez réessayer plus tard ou importer les fichiers exportés.' : 'Les données restent enregistrées sur l’appareil. Réessayez plus tard ou utilisez l’export en fichier.') + '</div>' +
     '<div class="actions"><button class="btn btn-primary" data-a="close">OK</button></div></div></div>';
 }
+/* Liste des préventes validées ce soir sur cet appareil (clic sur le compteur « Préventes QR ») */
+function vQlist() {
+  var all = recs(tonight()).filter(function (r) { return r.type === 'prevente'; }).slice().reverse();
+  var q = (S.qSearch || '').trim().toLowerCase(), m = /[0-9a-f]{32}/i.exec(q); if (m) q = m[0].toLowerCase(); // URL complète collée : on garde le code
+  var shown = q ? all.filter(function (r) { return String(r.code).toLowerCase().indexOf(q) >= 0; }) : all;
+  var ok = valid(all).length;
+  var rows = shown.map(function (r) {
+    var tag = r.annulation ? '<span class="pill warn">annulée</span>' : r.forcee ? '<span class="pill warn">' + ({ format: 'QR non reconnu', inconnu: 'hors liste' }[r.anomalie] || 'doublon') + ' · accepté</span>' : r.controle === 'liste' ? '<span class="pill">liste ✓</span>' : '<span class="pill">✓</span>';
+    return '<div class="qrow' + (r.annulation ? ' cancelled' : '') + '"><span class="h">' + hhmm(r.horodatage) + '</span><code>' + esc(r.code) + '</code>' + tag + '</div>';
+  }).join('');
+  return '<div class="overlay"><div class="modal" style="width:min(680px,96vw);max-height:92%" data-caisse="entrees"><div class="row"><div><h2>Préventes validées</h2><div class="sub">' + nightLabel(tonight()) + ' · ' + plural(ok, 'prévente') + ' sur cet appareil' + (all.length > ok ? ' (+ ' + (all.length - ok) + ' annulée' + (all.length - ok > 1 ? 's' : '') + ')' : '') + '</div></div><button class="btn" data-a="close">Fermer</button></div>' +
+    (all.length ? '<label class="f">Rechercher un code<input type="text" data-f="qSearch" value="' + esc(S.qSearch || '') + '" placeholder="quelques caractères du code" autocomplete="off" autocapitalize="none" spellcheck="false"></label>' : '') +
+    '<div style="overflow-y:auto;min-height:0">' + (rows || '<div class="empty">' + (all.length ? 'Aucun code ne correspond' : 'Aucune prévente scannée ce soir') + '</div>') + '</div>' +
+    '<div class="sub">Plus récentes en haut. Pour annuler une prévente : onglet Historique.</div></div></div>';
+}
 function vTestDelQ() {
   var n = countQ();
   return '<div class="overlay"><div class="modal" style="width:min(520px,96vw)"><h2 style="color:var(--red)">TEST · Effacer les préventes scannées</h2>' +
@@ -1391,7 +1413,7 @@ function render() {
   var act = document.activeElement, f = act && act.dataset ? act.dataset.f : null, pos = f ? act.selectionStart : null;
   if (VIDEO.parentNode !== CAMHOLD) CAMHOLD.appendChild(VIDEO); // la vidéo survit au rendu
   var html = S.screen === 'home' ? vHome() : S.screen === 'bilan' ? vBilan() : vPos();
-  var M = { testDelQ: vTestDelQ, plist: vPlist, ghcfg: vGhCfg, ghres: vGhRes, pay: vPay, scan: vScan, okB: vOkB, cancel: vCancel, device: vDevice, storage: vStorage, days: vDays, import: vImport };
+  var M = { qlist: vQlist, testDelQ: vTestDelQ, plist: vPlist, ghcfg: vGhCfg, ghres: vGhRes, pay: vPay, scan: vScan, okB: vOkB, cancel: vCancel, device: vDevice, storage: vStorage, days: vDays, import: vImport };
   if (S.storageMsg && !S.modal) S.modal = 'storage';
   if (S.modal && M[S.modal]) html += M[S.modal]();
   if (S.toast) html += '<div class="toast">' + esc(S.toast) + '</div>';
