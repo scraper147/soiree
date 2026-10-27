@@ -216,6 +216,7 @@ label.f input{height:52px;border:1px solid var(--line2);border-radius:10px;paddi
 .result span{font-size:32px;font-weight:800}
 .paybody{min-height:330px;display:flex;flex-direction:column;gap:14px}
 .paybody.mid{justify-content:center}
+.autobar{border:1px solid var(--line2);background:var(--surface);border-radius:12px;padding:10px 16px;font-size:15px;font-weight:700;max-width:min(640px,100%);text-align:center}
 .memwarn{display:block;width:100%;flex-shrink:0;border:none;background:var(--warn-bg);color:var(--warn-text);font-size:15px;font-weight:700;padding:10px 16px;text-align:center}
 .memgauge{display:flex;flex-direction:column;gap:6px;font-size:15px}
 .memgauge .bar i{background:var(--leaf)}
@@ -301,7 +302,7 @@ var LOGO_S = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMDAgQ
 /* Catalogue intégré : utilisé tant que catalogue.json n'a pas pu être chargé (premier lancement sans réseau, aperçu). */
 var DEFAULT_CAT = {"format": "chlorophylle-caisse/catalogue", "formatVersion": 1, "version": 2, "date": "2026-10-22", "soiree": "Chlorophylle Night", "entrees": [{"id": "entree", "libelle": "Entrée", "prix": 15, "ordre": 1, "actif": true}, {"id": "vip", "libelle": "Table VIP", "prix": 300, "ordre": 2, "actif": true}], "tickets": {"prixCase": 3, "casesParCarte": 18}, "prevente": {"modele": "^https://chlorophylle-night-by-xa\\.be/Chloropylle/admin/display_ev\\.php\\?q=([0-9a-fA-F]{32})&action=control$", "description": "QR officiels : https://chlorophylle-night-by-xa.be/Chloropylle/admin/display_ev.php?q=<32 caractères 0-9 a-f>&action=control (le groupe entre parenthèses est le code du billet)"}, "boissons": [{"id": "softs", "nom": "Softs", "ordre": 1, "produits": [{"id": "eau-plate", "libelle": "Eau plate", "format": "verre", "cases": 1, "ordre": 1, "actif": true}, {"id": "eau-petillante", "libelle": "Eau pétillante", "format": "verre", "cases": 1, "ordre": 2, "actif": true}, {"id": "coca", "libelle": "Coca-Cola", "format": "verre", "cases": 1, "ordre": 3, "actif": true}, {"id": "redbull", "libelle": "Red Bull", "format": "verre", "cases": 1, "ordre": 4, "actif": true}, {"id": "fanta", "libelle": "Fanta", "format": "verre", "cases": 1, "ordre": 5, "actif": true}, {"id": "sprite", "libelle": "Sprite", "format": "verre", "cases": 1, "ordre": 6, "actif": true}, {"id": "icetea", "libelle": "Ice Tea", "format": "verre", "cases": 1, "ordre": 7, "actif": true}], "actif": true}, {"id": "bieres", "nom": "Bières", "ordre": 2, "produits": [{"id": "jupiler", "libelle": "Jupiler", "format": "verre", "cases": 1, "ordre": 1, "actif": true}, {"id": "bertin-framboise", "libelle": "Bertinchamps Framboise 4,2 %", "format": "verre", "cases": 1, "ordre": 2, "actif": true}, {"id": "bertin-hiver", "libelle": "Bertinchamps Hiver 8 %", "format": "verre", "cases": 1, "ordre": 3, "actif": true}, {"id": "bertin-passion", "libelle": "Bertinchamps Passion 0 %", "format": "verre", "cases": 2, "ordre": 4, "actif": true}, {"id": "desperados", "libelle": "Desperados", "format": "verre", "cases": 2, "ordre": 5, "actif": true}], "actif": true}, {"id": "vins", "nom": "Vins", "ordre": 3, "produits": [{"id": "vin-rouge", "libelle": "Vin rouge", "format": "verre", "cases": 2, "ordre": 1, "actif": true}, {"id": "vin-blanc", "libelle": "Vin blanc", "format": "verre", "cases": 2, "ordre": 2, "actif": true}, {"id": "vin-rose", "libelle": "Vin rosé", "format": "verre", "cases": 2, "ordre": 3, "actif": true}, {"id": "vin-rouge-btl", "libelle": "Vin rouge", "format": "bouteille", "cases": 8, "ordre": 4, "actif": true}, {"id": "vin-blanc-btl", "libelle": "Vin blanc", "format": "bouteille", "cases": 8, "ordre": 5, "actif": true}, {"id": "vin-rose-btl", "libelle": "Vin rosé", "format": "bouteille", "cases": 8, "ordre": 6, "actif": true}], "actif": true}, {"id": "alcools", "nom": "Alcools", "ordre": 4, "produits": [{"id": "jack", "libelle": "Jack Daniel's", "format": "verre", "cases": 3, "ordre": 1, "actif": true}, {"id": "greygoose", "libelle": "Grey Goose", "format": "verre", "cases": 5, "ordre": 2, "actif": true}, {"id": "eristoff-rouge", "libelle": "Eristoff rouge", "format": "verre", "cases": 3, "ordre": 3, "actif": true}, {"id": "eristoff-blanc", "libelle": "Eristoff blanc", "format": "verre", "cases": 3, "ordre": 4, "actif": true}, {"id": "bacardi", "libelle": "Bacardi blanc", "format": "verre", "cases": 3, "ordre": 5, "actif": true}, {"id": "captain", "libelle": "Captain Morgan", "format": "verre", "cases": 3, "ordre": 6, "actif": true}, {"id": "bombay", "libelle": "Bombay Sapphire", "format": "verre", "cases": 3, "ordre": 7, "actif": true}], "actif": true}, {"id": "bouteilles", "nom": "Bouteilles", "ordre": 5, "produits": [{"id": "jack-btl", "libelle": "Jack Daniel's", "format": "bouteille", "cases": 36, "ordre": 1, "actif": true}, {"id": "greygoose-btl", "libelle": "Grey Goose", "format": "bouteille", "cases": 51, "ordre": 2, "actif": true}, {"id": "eristoff-rouge-btl", "libelle": "Eristoff rouge", "format": "bouteille", "cases": 36, "ordre": 3, "actif": true}, {"id": "eristoff-blanc-btl", "libelle": "Eristoff blanc", "format": "bouteille", "cases": 36, "ordre": 4, "actif": true}, {"id": "bacardi-btl", "libelle": "Bacardi blanc", "format": "bouteille", "cases": 36, "ordre": 5, "actif": true}, {"id": "captain-btl", "libelle": "Captain Morgan", "format": "bouteille", "cases": 36, "ordre": 6, "actif": true}, {"id": "bombay-btl", "libelle": "Bombay Sapphire", "format": "bouteille", "cases": 36, "ordre": 7, "actif": true}], "actif": true}, {"id": "cocktails", "nom": "Cocktails", "ordre": 6, "produits": [{"id": "chloro", "libelle": "Chlorophylle Night", "format": "verre", "cases": 3, "ordre": 1, "actif": true}, {"id": "aperol", "libelle": "Apérol Spritz", "format": "verre", "cases": 3, "ordre": 2, "actif": true}, {"id": "stgermain", "libelle": "St-Germain Spritz", "format": "verre", "cases": 3, "ordre": 3, "actif": true}], "actif": true}, {"id": "bulles", "nom": "Bulles", "ordre": 7, "produits": [{"id": "cava", "libelle": "Cava", "format": "verre", "cases": 2, "ordre": 1, "actif": true}, {"id": "champagne", "libelle": "Champagne", "format": "verre", "cases": 4, "ordre": 2, "actif": true}, {"id": "cava-btl", "libelle": "Cava", "format": "bouteille", "cases": 10, "ordre": 3, "actif": true}, {"id": "champagne-btl", "libelle": "Champagne", "format": "bouteille", "cases": 30, "ordre": 4, "actif": true}], "actif": true}]};
 
-var APP_VERSION = 'v15'; // = numéro du cache dans sw.js
+var APP_VERSION = 'v16'; // = numéro du cache dans sw.js
 var CAT_KEY = STORE_KEY + '-catalogue';
 var DEV_KEY = STORE_KEY + '-appareil';
 var FORMAT_CAT = 'chlorophylle-caisse/catalogue';
@@ -391,8 +392,10 @@ var STORAGE_LIMIT = 5000000;
 function storageUsed() { var n = 0; try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); n += k.length + (localStorage.getItem(k) || '').length; } } catch (e) {} return n; }
 function storageMo(n) { return (n / 1000000).toFixed(1).replace('.', ',') + ' Mo'; }
 function refreshUsage() { S.usedPct = Math.round(storageUsed() * 100 / STORAGE_LIMIT); }
-function persist() {
-  try { localStorage.setItem(STORE_KEY, JSON.stringify({ nights: S.nights, exported: S.exported, caisse: S.caisse })); refreshUsage(); return true; }
+function persist(noSync) {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify({ nights: S.nights, exported: S.exported, caisse: S.caisse })); refreshUsage();
+    if (!noSync && typeof AUTO !== 'undefined' && AUTO) autoSchedule(AUTO_DELAI); // modification : envoi automatique un peu plus tard
+    return true; }
   catch (e) { S.modal = 'storage'; S.menu = false; refreshUsage(); return false; }
 }
 refreshUsage();
@@ -791,35 +794,84 @@ function utf8b64(s) { return decodeURIComponent(escape(atob(String(s).replace(/\
 function ghUrl(path) { return '/repos/' + GH_REPO + '/contents/' + path.split('/').map(encodeURIComponent).join('/'); }
 /* chlorophylle/AAAA-MM-JJ_<nom de l'appareil>_<id appareil>.json : un fichier par appareil et par soirée, un renvoi le remplace */
 function ghPath(night) { var n = slug(DEV.nom || '').slice(0, 24); return GH_DOSSIER + '/' + night + '_' + (n ? n + '_' : '') + DEV.id + '.json'; }
+/* Empreinte du contenu d'une soirée : si elle change depuis le dernier envoi, la soirée est à renvoyer */
+function nightSig(night) { var l = recs(night); return l.length + '|' + l.filter(function (r) { return r.annulation; }).length + '|' + devName(); }
+/* Envoi d'une soirée (remplace le fichier de cet appareil). Lance une exception (code HTTP, ou 0 sans réseau) en cas d'échec. */
+async function ghPut(night, auto) {
+  var sig = nightSig(night), path = ghPath(night), url = ghUrl(path);
+  var body = { message: (auto ? 'Envoi automatique · ' : '') + 'Chlorophylle Night, soirée du ' + frDate(night) + ' (' + devName() + ', appareil ' + DEV.id + ')',
+               content: b64utf8(JSON.stringify(nightFile(night), null, 2)) };
+  var old = GH.chemins && GH.chemins[night]; // ancien nom de fichier (appareil renommé) : supprimé pour ne pas compter deux fois
+  for (var essai = 0; essai < 2; essai++) {
+    var g = await ghApi('GET', url);
+    if (g.ok) body.sha = (await g.json()).sha; else if (g.status === 404) delete body.sha; else throw g.status;
+    var r = await ghApi('PUT', url, body);
+    if (r.ok) break;
+    if ((r.status === 409 || r.status === 422) && essai === 0) continue; // fichier modifié entre-temps : on relit et on réessaie
+    throw r.status;
+  }
+  if (old && old !== path) {
+    try { var go = await ghApi('GET', ghUrl(old)); if (go.ok) await ghApi('DELETE', ghUrl(old), { message: 'Renommage de l’appareil ' + DEV.id, sha: (await go.json()).sha }); } catch (e) {}
+  }
+  GH.envois[night] = isoLocal(new Date()); GH.chemins = GH.chemins || {}; GH.chemins[night] = path;
+  GH.sig = GH.sig || {}; GH.sig[night] = sig; saveGh();
+  S.exported[night] = true; persist(true);
+  return path;
+}
 async function ghSend(night) {
   if (S.ghBusy || !ghReady()) return;
   night = night || tonight();
   S.ghBusy = night; S.menu = false; render();
-  var path = ghPath(night), url = ghUrl(path);
-  var body = { message: 'Chlorophylle Night, soirée du ' + frDate(night) + ' (' + devName() + ', appareil ' + DEV.id + ')',
-               content: b64utf8(JSON.stringify(nightFile(night), null, 2)) };
   try {
-    // ancien fichier de cet appareil sous un autre nom (appareil renommé) : on le supprime pour ne pas compter deux fois
-    var old = GH.chemins && GH.chemins[night];
-    for (var essai = 0; essai < 2; essai++) {
-      var g = await ghApi('GET', url);
-      if (g.ok) body.sha = (await g.json()).sha; else if (g.status === 404) delete body.sha; else throw g.status;
-      var r = await ghApi('PUT', url, body);
-      if (r.ok) break;
-      if ((r.status === 409 || r.status === 422) && essai === 0) continue; // fichier modifié entre-temps : on relit et on réessaie
-      throw r.status;
-    }
-    if (old && old !== path) {
-      try { var go = await ghApi('GET', ghUrl(old)); if (go.ok) await ghApi('DELETE', ghUrl(old), { message: 'Renommage de l’appareil ' + DEV.id, sha: (await go.json()).sha }); } catch (e) {}
-    }
-    GH.envois[night] = isoLocal(new Date()); GH.chemins = GH.chemins || {}; GH.chemins[night] = path; saveGh();
-    S.exported[night] = true; persist();
+    var path = await ghPut(night, false);
+    AUTO.err = null; AUTO.last = Date.now();
     toast('Envoyé sur GitHub à ' + hhmm(GH.envois[night]) + ' : ' + path, 5000);
   } catch (e) {
     if (e === 401) { delete GH.token; saveGh(); } // jeton refusé : il faudra déverrouiller à nouveau
     S.ghResult = { titre: 'Envoi impossible', text: ghError(typeof e === 'number' ? e : 0) }; S.modal = 'ghres';
   } finally { S.ghBusy = null; render(); }
 }
+
+/* ---------- Envoi automatique ----------
+   Dès que l'appareil a internet (et que l'envoi est déverrouillé), chaque soirée modifiée depuis son dernier envoi
+   est envoyée, sans action ni message. Après une modification : envoi ~15 s plus tard, au plus une fois toutes les 3 minutes.
+   Vérification aussi au démarrage, au retour du réseau, au retour de l'app au premier plan et toutes les minutes. */
+var AUTO_DELAI = 15000, AUTO_MIN_INTERVALLE = 180000;
+var AUTO = { timer: null, last: 0, err: null };
+function nightsToSend() {
+  GH.sig = GH.sig || {};
+  return Object.keys(S.nights).filter(function (n) { return S.nights[n] && S.nights[n].length && GH.sig[n] !== nightSig(n); }).sort();
+}
+function autoSchedule(delay) { if (!ghConfigured()) return; clearTimeout(AUTO.timer); AUTO.timer = setTimeout(autoSync, delay); }
+async function autoSync() {
+  if (!ghReady() || S.ghBusy || navigator.onLine === false) return;
+  var todo = nightsToSend(); if (!todo.length) return;
+  var wait = AUTO.last + AUTO_MIN_INTERVALLE - Date.now();
+  if (wait > 0 && !AUTO.err) { autoSchedule(wait); return; }
+  S.ghBusy = 'auto'; render();
+  try { for (var i = 0; i < todo.length; i++) await ghPut(todo[i], true); AUTO.err = null; }
+  catch (e) { if (e === 401) { delete GH.token; saveGh(); } AUTO.err = typeof e === 'number' ? e : 0; }
+  finally { AUTO.last = Date.now(); S.ghBusy = null; render(); }
+}
+function autoStatus() {
+  if (!ghConfigured()) return null;
+  if (!ghReady()) return { ko: true, court: 'Envoi auto inactif', t: 'Envoi automatique inactif : touchez pour déverrouiller GitHub' };
+  if (S.ghBusy === 'auto') return { court: 'Envoi…', t: 'Envoi automatique en cours…' };
+  var n = nightsToSend().length, last = Object.keys(GH.envois).map(function (k) { return GH.envois[k]; }).sort().pop();
+  if (n) {
+    if (navigator.onLine === false) return { warn: true, court: 'En attente de réseau', t: 'Pas de réseau : ' + plural(n, 'soirée') + ' à envoyer dès le retour d’internet' };
+    if (AUTO.err === 401) return { ko: true, court: 'Envoi auto inactif', t: 'GitHub refuse le jeton : touchez pour déverrouiller à nouveau' };
+    if (AUTO.err != null) return { warn: true, court: 'Nouvel essai bientôt', t: 'Dernier envoi automatique échoué (' + ghError(AUTO.err) + ') : nouvel essai automatique' };
+    return { court: 'Envoi prévu', t: 'Envoi automatique dans quelques instants' };
+  }
+  return { ok: true, court: last ? 'À jour ' + hhmm(last) : 'À jour', t: last ? 'Envoi automatique : à jour (dernier envoi ' + (frDate(last).slice(0, 5)) + ' à ' + hhmm(last) + ')' : 'Envoi automatique actif : rien à envoyer' };
+}
+window.addEventListener('online', function () { autoSchedule(2000); render(); });
+window.addEventListener('offline', function () { render(); });
+document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') autoSchedule(3000); });
+setInterval(function () { autoSync(); }, 60000);
+autoSchedule(5000);
+
 /* Bilan : charge depuis GitHub les fichiers des AUTRES appareils pour la soirée affichée */
 async function ghLoad(night) {
   if (S.ghBusy || !ghReady()) return;
@@ -855,6 +907,7 @@ async function ghUnlock() {
   GH.token = token; saveGh(); S.ghPass = '';
   S.ghMsg = { ok: true, text: 'Déverrouillé sur cet appareil. Vérification de l’accès au dépôt…' }; render();
   await ghTest();
+  AUTO.err = null; autoSchedule(1000);
   if (S.ghPending && S.ghMsg && S.ghMsg.ok) { var d = S.ghPending; S.ghPending = null; S.modal = S.ghBack || null; S.ghBack = null; if (d === 'load') ghLoad(S.bilanNight || tonight()); else ghSend(d); }
 }
 async function ghTest() {
@@ -1006,18 +1059,29 @@ function vHome() {
   return '<div class="home">' +
     '<img class="logo" src="' + LOGO_FULL + '" alt="Chlorophylle Night by ’Xa">' +
     (S.usedPct >= 80 ? vStorageBar() : '') +
+    vAutoBar() +
     '<div class="ctiles">' + Object.keys(CAISSES).map(function (c) {
       return '<button class="ctile" data-caisse="' + c + '" data-a="open" data-v="' + c + '">' + svg(I[c], 40) +
         '<div style="display:flex;flex-direction:column;gap:6px"><span class="t">' + CAISSES[c].nom + '</span><span class="d">' + CAISSES[c].desc + '</span><span class="k">' + k[c] + '</span></div></button>';
     }).join('') + '</div>' +
     '<div class="homelinks"><span class="sub">App ' + APP_VERSION + ' · ' + esc(catalogueLabel(CATALOGUE)) + '</span>' +
       '<button class="btn-link" data-a="device">Nom de l’appareil</button>' +
-      (ghConfigured() ? '<button class="btn-link" data-a="openGh">Envoi GitHub' + (ghReady() ? ' (déverrouillé)' : '') + '</button>' : '') +
+      (ghConfigured() ? '<button class="btn-link" data-a="openGh">Envoi GitHub</button>' : '') +
       '</div>' +
     '</div>';
 }
 
 /* ---------- En-tête caisse ---------- */
+/* État de l'envoi automatique : bandeau sur l'accueil, mention discrète dans l'en-tête des caisses */
+function vAutoBar() {
+  var a = autoStatus(); if (!a) return '';
+  var st = a.ko ? 'background:var(--warn-bg);color:var(--red);border-color:var(--red)' : a.warn ? 'background:var(--warn-bg);color:var(--warn-text)' : 'color:var(--muted)';
+  return '<button class="autobar" data-a="openGh" style="' + st + '">☁ ' + esc(a.t) + '</button>';
+}
+function vAutoMini() {
+  var a = autoStatus(); if (!a) return '';
+  return '<br><span data-a="openGh" style="cursor:pointer;color:' + (a.ko ? 'var(--red)' : a.warn ? 'var(--amber)' : 'var(--faint)') + '">☁ ' + esc(a.court) + '</span>';
+}
 function vHeader() {
   var home = '<img src="' + LOGO_S + '" alt="Chlorophylle Night \u2013 retour à l\u2019accueil" title="Accueil" data-a="goHome" style="cursor:pointer">';
   var segC = '<div class="ctitle">' + svg(I[S.caisse], PHONE ? 22 : 26) + '<span>' + CAISSES[S.caisse].nom + '</span></div>';
@@ -1026,7 +1090,7 @@ function vHeader() {
   if (PHONE) return '<div class="header">' + home + segC + '<div style="flex:1"></div>' + right + '</div>' +
     '<div class="subbar">' + segT + '<div class="hdate" style="margin-left:auto;font-size:12px">' + frDate(tonight()).slice(0, 5) + '<br>' + esc(devName()) + '</div></div>';
   return '<div class="header">' + home + segC + segT +
-    '<div style="flex:1"></div><div class="hdate">' + nightLabel(tonight()) + '<br>' + esc(devName()) + '</div>' + right + '</div>';
+    '<div style="flex:1"></div><div class="hdate">' + nightLabel(tonight()) + '<br>' + esc(devName()) + vAutoMini() + '</div>' + right + '</div>';
 }
 
 function vPos() {
@@ -1231,7 +1295,7 @@ function vMenu() {
   function tile(a, icon, label, sub, v) { return '<button class="mtile" data-a="' + a + '"' + (v ? ' data-v="' + v + '"' : '') + '>' + svg(icon) + '<span class="mt-l">' + label + '</span>' + (sub ? '<span class="mt-s">' + sub + '</span>' : '') + '</button>'; }
   return '<div class="menu-back" data-a="toggleMenu"></div><div class="menu" role="menu">' +
     '<div class="mgroup">Soirée</div><div class="mgrid">' +
-      (ghConfigured() ? tile('ghSend', I.up, S.ghBusy && S.ghBusy !== 'load' ? 'Envoi en cours…' : 'Envoyer sur GitHub', ghReady() ? (GH.envois[tonight()] ? 'Dernier envoi à ' + hhmm(GH.envois[tonight()]) : 'Soirée en cours, dépôt « ventes »') : 'À déverrouiller une fois') : '') +
+      (ghConfigured() ? tile('ghSend', I.up, S.ghBusy && S.ghBusy !== 'load' ? 'Envoi en cours…' : 'Envoyer maintenant', (autoStatus() || {}).court || '') : '') +
       tile('download', I.down, 'Exporter la soirée', 'Fichier des 3 caisses de cet appareil') +
       tile('showDays', I.cal, 'Soirées enregistrées', 'Télécharger, effacer, mémoire') + '</div>' +
     '<div class="mgroup">Appareil</div><div class="mgrid">' +
