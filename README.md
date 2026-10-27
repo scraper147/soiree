@@ -62,7 +62,7 @@ Le code du billet peut aussi être saisi à la main (code seul ou adresse compl�
 Les soirées vont dans le dossier **`soiree/`** du dépôt privé des ventes, avec le jeton et la phrase de passe des caisses.
 
 - **Déverrouiller (une fois par appareil)** : accueil → **Envoi GitHub**, saisir la phrase de passe des caisses. La phrase n'est jamais enregistrée ; **Verrouiller cet appareil** efface le jeton.
-- **Envoi automatique** : dès que l'appareil a internet, chaque soirée modifiée depuis son dernier envoi part toute seule (environ 15 s après une vente ou une commande, au plus une fois toutes les 3 minutes ; aussi au démarrage, au retour du réseau et au retour de l'app au premier plan). Sans réseau, les envois attendent et partent dès le retour d'internet.
+- **Envoi automatique** : dès que l'appareil a internet, chaque soirée modifiée depuis son dernier envoi part toute seule (environ 15 s après une vente ou une commande, au plus une fois par minute ; aussi au démarrage, au retour du réseau et au retour de l'app au premier plan). Sans réseau, les envois attendent et partent dès le retour d'internet.
 - **État de l'envoi** : bandeau ☁ sur l'accueil (« à jour », « en attente de réseau », « inactif : touchez pour déverrouiller »…) et mention ☁ sous le nom de l'appareil dans l'en-tête des caisses (tablette).
 - **Envoyer maintenant** (menu ⋮) ou **Soirées enregistrées → Envoyer / Renvoyer sur GitHub** : envoi immédiat à la main.
 - Si GitHub refuse le jeton (expiré), l'envoi se verrouille et le bandeau devient rouge : déverrouiller à nouveau (avec une nouvelle version de la caisse si la clé a changé).
@@ -83,9 +83,9 @@ Le catalogue (prix des entrées, prix de la case et nombre de cases par carte, b
 
 ## Mettre à jour l'app
 
-Remplacer les fichiers sur GitHub, **et augmenter le numéro de cache dans `sw.js`** (actuellement `PREFIX + 'v16'`) ainsi que `APP_VERSION` dans `index.html` (même numéro).
+Remplacer les fichiers sur GitHub, **et augmenter le numéro de cache dans `sw.js`** (actuellement `PREFIX + 'v18'`) ainsi que `APP_VERSION` dans `index.html` (même numéro).
 
-- Le numéro de version s'affiche en bas de l'accueil (« App v16 · … ») : c'est le moyen de vérifier qu'un appareil a bien la dernière version.
+- Le numéro de version s'affiche en bas de l'accueil (« App v18 · … ») : c'est le moyen de vérifier qu'un appareil a bien la dernière version.
 - GitHub Pages met 1 à 2 minutes à publier après le commit.
 - Depuis la v12, l'appareil prend la nouvelle version à l'ouverture de l'app avec réseau et se recharge tout seul (sur l'accueil, jamais pendant une vente).
 - Si un appareil reste sur une ancienne version : fermer complètement l'app (balayer dans les apps récentes), attendre une dizaine de minutes, la rouvrir avec réseau, puis la fermer et rouvrir encore une fois. **Ne jamais effacer les données de Chrome** pour forcer la mise à jour : les ventes de l'appareil seraient perdues.
