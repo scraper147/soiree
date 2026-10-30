@@ -1,7 +1,7 @@
 {
   "format": "chlorophylle-caisse/catalogue",
   "formatVersion": 1,
-  "version": 7,
+  "version": 8,
   "date": "2026-10-30",
   "soiree": "Alice 2026",
   "entrees": [
@@ -322,6 +322,14 @@
           "format": "verre",
           "cases": 3,
           "ordre": 8,
+          "actif": true
+        },
+        {
+          "id": "alcools-2",
+          "libelle": "Get27",
+          "format": "verre",
+          "cases": 3,
+          "ordre": 9,
           "actif": true
         }
       ],
