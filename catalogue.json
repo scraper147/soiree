@@ -1,7 +1,7 @@
 {
   "format": "chlorophylle-caisse/catalogue",
   "formatVersion": 1,
-  "version": 6,
+  "version": 7,
   "date": "2026-10-30",
   "soiree": "Alice 2026",
   "entrees": [
@@ -17,6 +17,20 @@
       "libelle": "Table VIP",
       "prix": 300,
       "ordre": 2,
+      "actif": true
+    },
+    {
+      "id": "entree1",
+      "libelle": "Entrée invité/prévente",
+      "prix": 0,
+      "ordre": 3,
+      "actif": true
+    },
+    {
+      "id": "entree2",
+      "libelle": "Table VIP invité",
+      "prix": 0,
+      "ordre": 4,
       "actif": true
     }
   ],
