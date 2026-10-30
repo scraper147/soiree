@@ -53,6 +53,8 @@ Ensuite l'app fonctionne sans internet.
 Dans chaque cas d'alerte : **Refuser** ou **Laisser entrer quand même** (l'entrée est alors marquée dans l'historique et dans les fichiers envoyés : doublon, QR non reconnu ou hors liste).
 Le code du billet peut aussi être saisi à la main (code seul ou adresse complète).
 
+**Prévente sans QR code** (QR perdu) : tuile **« Prévente sans QR code »** de la caisse Entrées. Le client montre la preuve de son paiement (mail de confirmation, extrait bancaire…) ; choisir le **nombre de personnes** puis **Enregistrer**. Chaque personne compte comme une prévente à 0 €, marquée « sans QR · justificatif » dans l'historique, la liste des préventes et les fichiers envoyés. Pas de contrôle automatique : vérifier soi-même que le justificatif correspond à la soirée.
+
 **Liste des préventes validées** : toucher le compteur **« Préventes QR »** de la caisse Entrées affiche les codes déjà validés ce soir sur l'appareil (heure, code, pastille si l'entrée a été forcée), avec une recherche par code (quelques caractères, ou l'adresse complète collée).
 
 **Liste des billets vendus** : pas encore en place (elle sera intégrée plus tard). En attendant, seuls le format et les doublons sont contrôlés.
@@ -85,9 +87,9 @@ Le catalogue (prix des entrées, prix de la case et nombre de cases par carte, b
 
 ## Mettre à jour l'app
 
-Remplacer les fichiers sur GitHub, **et augmenter le numéro de cache dans `sw.js`** (actuellement `PREFIX + 'v19'`) ainsi que `APP_VERSION` dans `index.html` (même numéro).
+Remplacer les fichiers sur GitHub, **et augmenter le numéro de cache dans `sw.js`** (actuellement `PREFIX + 'v21'`) ainsi que `APP_VERSION` dans `index.html` (même numéro).
 
-- Le numéro de version s'affiche en bas de l'accueil (« App v19 · … ») : c'est le moyen de vérifier qu'un appareil a bien la dernière version.
+- Le numéro de version s'affiche en bas de l'accueil (« App v21 · … ») : c'est le moyen de vérifier qu'un appareil a bien la dernière version.
 - GitHub Pages met 1 à 2 minutes à publier après le commit.
 - Depuis la v12, l'appareil prend la nouvelle version à l'ouverture de l'app avec réseau et se recharge tout seul (sur l'accueil, jamais pendant une vente).
 - Si un appareil reste sur une ancienne version : fermer complètement l'app (balayer dans les apps récentes), attendre une dizaine de minutes, la rouvrir avec réseau, puis la fermer et rouvrir encore une fois. **Ne jamais effacer les données de Chrome** pour forcer la mise à jour : les ventes de l'appareil seraient perdues.
