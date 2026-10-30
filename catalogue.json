@@ -1,8 +1,8 @@
 {
   "format": "chlorophylle-caisse/catalogue",
   "formatVersion": 1,
-  "version": 4,
-  "date": "2026-10-21",
+  "version": 5,
+  "date": "2026-10-30",
   "soiree": "Alice 2026",
   "entrees": [
     {
@@ -55,11 +55,19 @@
           "actif": true
         },
         {
+          "id": "softs-1",
+          "libelle": "Coca zero",
+          "format": "verre",
+          "cases": 1,
+          "ordre": 4,
+          "actif": true
+        },
+        {
           "id": "redbull",
           "libelle": "Red Bull",
           "format": "verre",
           "cases": 1,
-          "ordre": 4,
+          "ordre": 5,
           "actif": true
         },
         {
@@ -67,7 +75,7 @@
           "libelle": "Fanta",
           "format": "verre",
           "cases": 1,
-          "ordre": 5,
+          "ordre": 6,
           "actif": true
         },
         {
@@ -75,7 +83,7 @@
           "libelle": "Sprite",
           "format": "verre",
           "cases": 1,
-          "ordre": 6,
+          "ordre": 7,
           "actif": true
         },
         {
@@ -83,7 +91,7 @@
           "libelle": "Ice Tea",
           "format": "verre",
           "cases": 1,
-          "ordre": 7,
+          "ordre": 8,
           "actif": true
         }
       ],
