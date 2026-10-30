@@ -4,7 +4,7 @@ Application de caisse pour la soirée **Chlorophylle Night by 'Xa**, sur tablett
 
 | Caisse | Rôle |
 |---|---|
-| **Entrées** | Entrée 15 €, table VIP 300 €, encaissement Cash / Bancontact / Mixte. Bouton **Scanner une prévente** : la caméra lit le QR code du billet, l'entrée est comptée à 0 € et un billet déjà scanné est signalé en rouge (refuser ou laisser entrer quand même). Le code peut aussi être saisi à la main. |
+| **Entrées** | Entrée 15 €, Table VIP 300 €, **Entrée invité/prévente (0 €)**, **Table VIP invité (0 €)**, encaissement Cash / Bancontact / Mixte. Un panier qui ne contient que des articles à 0 € se valide directement (bouton **Valider (0 €)**, sans écran de paiement). Les QR codes des préventes sont contrôlés **avec l'appareil photo de la tablette** (hors de l'app) ; dans la caisse, chaque prévente contrôlée s'encode en **Entrée invité/prévente (0 €)**. |
 | **Tickets** | Cartes de 18 cases à 3 € la case (54 € la carte). Boutons + / − 1 carte et + / − 1 case. Pavé « Le client demande… » : **un nombre de cases** (calcule le prix) ou **un budget** (calcule le maximum de cases et ce qui reste). Encaissement normal. |
 | **Boissons** | Le serveur encode la commande ; l'app affiche le **nombre de cases à barrer** sur la carte du client. Aucun encaissement. |
 
@@ -28,9 +28,17 @@ Ne plus renommer le dépôt une fois les appareils installés.
 1. Connecter l'appareil à internet, ouvrir l'adresse dans **Chrome**.
 2. Menu **⋮ → Installer l'application**. Lancer l'icône **« Chlorophylle »**.
 3. Sur l'accueil : **Nom de l'appareil** (ex. « Entrée », « Caisse tickets », « Bar 1 »). Ce nom apparaît dans les fichiers envoyés.
-4. Ouvrir une fois la caisse **Entrées → Scanner une prévente** et **autoriser la caméra**.
+4. Pour le contrôle des préventes : vérifier que l'appareil photo de la tablette lit bien les QR codes (ouvrir l'appareil photo, viser le QR, toucher le lien proposé).
 
 Ensuite l'app fonctionne sans internet.
+
+### Sur iPhone / iPad
+
+Sur iPhone, Chrome n'a pas de menu « Installer l'application » : on ajoute l'app à l'écran d'accueil.
+- **Chrome** : ouvrir l'adresse, toucher l'icône **Partager** (carré avec une flèche vers le haut, à droite de la barre d'adresse), puis **Ajouter à l'écran d'accueil**. Si l'option n'apparaît pas, mettre Chrome et iOS à jour (iOS 16.4 minimum), ou utiliser Safari.
+- **Safari** : bouton **Partager** → **Sur l'écran d'accueil** → **Ajouter**.
+- Toujours ouvrir la caisse depuis l'icône « Chlorophylle » ainsi créée (les données de l'icône et celles d'un onglet du navigateur sont séparées).
+- Limite : la **lecture des QR codes par la caméra ne fonctionne pas sur iPhone/iPad** ; il faut taper le code. Pour l'entrée avec scan des préventes, utiliser une tablette ou un téléphone **Android** avec Chrome.
 
 ## Pendant la soirée
 
@@ -41,6 +49,8 @@ Ensuite l'app fonctionne sans internet.
 - La lecture des QR codes utilise la fonction intégrée de Chrome sur Android. Sur un appareil qui ne la propose pas (iPhone/iPad, navigateur de bureau), saisir le code à la main.
 
 ## Contrôle des préventes
+
+**Depuis la v23, le bouton « Scanner une prévente » est retiré** : les QR codes se scannent avec l'appareil photo de la tablette, puis la prévente s'encode en « Entrée invité/prévente » (0 €). Les fonctions ci-dessous restent dans le code (anciens scans, compteur « Préventes QR ») mais ne sont plus accessibles.
 
 À chaque scan, la caisse Entrées vérifie, dans l'ordre :
 
@@ -53,7 +63,7 @@ Ensuite l'app fonctionne sans internet.
 Dans chaque cas d'alerte : **Refuser** ou **Laisser entrer quand même** (l'entrée est alors marquée dans l'historique et dans les fichiers envoyés : doublon, QR non reconnu ou hors liste).
 Le code du billet peut aussi être saisi à la main (code seul ou adresse complète).
 
-**Prévente sans QR code** (QR perdu) : tuile **« Prévente sans QR code »** de la caisse Entrées. Le client montre la preuve de son paiement (mail de confirmation, extrait bancaire…) ; choisir le **nombre de personnes** puis **Enregistrer**. Chaque personne compte comme une prévente à 0 €, marquée « sans QR · justificatif » dans l'historique, la liste des préventes et les fichiers envoyés. Pas de contrôle automatique : vérifier soi-même que le justificatif correspond à la soirée.
+**Prévente sans QR code** (QR perdu) ou **invité** : ajouter **« Entrée invité/prévente »** (0 €) au panier, autant de fois que de personnes, puis **Valider (0 €)**. Le client sans QR montre la preuve de son paiement (mail de confirmation, extrait bancaire…) : vérifier soi-même qu'elle correspond à la soirée. Pour une table offerte : **« Table VIP invité »**. Dans les compteurs, les entrées à 0 € comptent dans « Entrées ce soir » mais pas dans « Payantes » ; les tables invitées comptent dans « Tables VIP ».
 
 **Liste des préventes validées** : toucher le compteur **« Préventes QR »** de la caisse Entrées affiche les codes déjà validés ce soir sur l'appareil (heure, code, pastille si l'entrée a été forcée), avec une recherche par code (quelques caractères, ou l'adresse complète collée).
 
@@ -84,12 +94,13 @@ Le catalogue (prix des entrées, prix de la case et nombre de cases par carte, b
 - À la prochaine ouverture avec réseau, chaque appareil propose **Installer** le nouveau catalogue ; menu **⋮ → Vérifier le catalogue** pour forcer la vérification.
 - Un catalogue de secours est intégré à l'app : il sert uniquement si `catalogue.json` n'a jamais pu être chargé.
 - Les `id` des boissons ne doivent pas changer pendant une soirée.
+- Entrées : le prix peut être **0** (invités). Champ facultatif `compte` : `"personne"` (compte dans les entrées) ou `"table"` (compte dans les tables VIP) ; sans ce champ, un `id` ou libellé contenant « vip » ou « table » est compté comme table.
 
 ## Mettre à jour l'app
 
-Remplacer les fichiers sur GitHub, **et augmenter le numéro de cache dans `sw.js`** (actuellement `PREFIX + 'v21'`) ainsi que `APP_VERSION` dans `index.html` (même numéro).
+Remplacer les fichiers sur GitHub, **et augmenter le numéro de cache dans `sw.js`** (actuellement `PREFIX + 'v23'`) ainsi que `APP_VERSION` dans `index.html` (même numéro).
 
-- Le numéro de version s'affiche en bas de l'accueil (« App v21 · … ») : c'est le moyen de vérifier qu'un appareil a bien la dernière version.
+- Le numéro de version s'affiche en bas de l'accueil (« App v23 · … ») : c'est le moyen de vérifier qu'un appareil a bien la dernière version.
 - GitHub Pages met 1 à 2 minutes à publier après le commit.
 - Depuis la v12, l'appareil prend la nouvelle version à l'ouverture de l'app avec réseau et se recharge tout seul (sur l'accueil, jamais pendant une vente).
 - Si un appareil reste sur une ancienne version : fermer complètement l'app (balayer dans les apps récentes), attendre une dizaine de minutes, la rouvrir avec réseau, puis la fermer et rouvrir encore une fois. **Ne jamais effacer les données de Chrome** pour forcer la mise à jour : les ventes de l'appareil seraient perdues.
