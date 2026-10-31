@@ -4,7 +4,7 @@ Application de caisse pour la soirée **Chlorophylle Night by 'Xa**, sur tablett
 
 | Caisse | Rôle |
 |---|---|
-| **Entrées** | Entrée 15 €, Table VIP 300 €, **Entrée invité/prévente (0 €)**, **Table VIP invité (0 €)**, encaissement Cash / Bancontact / Mixte. Un panier qui ne contient que des articles à 0 € se valide directement (bouton **Valider (0 €)**, sans écran de paiement). Les QR codes des préventes sont contrôlés **avec l'appareil photo de la tablette** (hors de l'app) ; dans la caisse, chaque prévente contrôlée s'encode en **Entrée invité/prévente (0 €)**. |
+| **Entrées** | Entrée 15 €, Table VIP 300 €, **Entrée invité/prévente (0 €)**, **Table VIP invité (0 €)**, encaissement Cash / Bancontact / Mixte. Un panier qui ne contient que des articles à 0 € se valide directement (bouton **Valider (0 €)**, sans écran de paiement). Tuile **Scanner une prévente** : contrôle du format du QR officiel, puis choix du **nombre d'entrées** liées au QR (pas de contrôle des doublons). |
 | **Tickets** | Cartes de 18 cases à 3 € la case (54 € la carte). Boutons + / − 1 carte et + / − 1 case. Pavé « Le client demande… » : **un nombre de cases** (calcule le prix) ou **un budget** (calcule le maximum de cases et ce qui reste). Encaissement normal. |
 | **Boissons** | Le serveur encode la commande ; l'app affiche le **nombre de cases à barrer** sur la carte du client. Aucun encaissement. |
 
@@ -28,7 +28,7 @@ Ne plus renommer le dépôt une fois les appareils installés.
 1. Connecter l'appareil à internet, ouvrir l'adresse dans **Chrome**.
 2. Menu **⋮ → Installer l'application**. Lancer l'icône **« Chlorophylle »**.
 3. Sur l'accueil : **Nom de l'appareil** (ex. « Entrée », « Caisse tickets », « Bar 1 »). Ce nom apparaît dans les fichiers envoyés.
-4. Pour le contrôle des préventes : vérifier que l'appareil photo de la tablette lit bien les QR codes (ouvrir l'appareil photo, viser le QR, toucher le lien proposé).
+4. Ouvrir une fois la caisse **Entrées → Scanner une prévente** et **autoriser la caméra**.
 
 Ensuite l'app fonctionne sans internet.
 
@@ -45,31 +45,33 @@ Sur iPhone, Chrome n'a pas de menu « Installer l'application » : on ajoute l'a
 - **Écran toujours allumé** : tant que l'app est ouverte au premier plan, la tablette ne se met pas en veille (fonction de Chrome). Si l'app passe en arrière-plan, la mise en veille normale reprend ; elle est de nouveau bloquée au retour dans l'app. Pensez à brancher les tablettes.
 
 - **Historique** (par caisse) : tout ce qui a été enregistré, avec **Annuler** (motif facultatif). L'enregistrement reste visible, barré, mais n'est plus compté.
-- **Préventes** : le contrôle des doublons porte sur les billets scannés **sur cet appareil**. Si deux appareils scannent à l'entrée, un même billet pourrait passer une fois sur chacun : de préférence, un seul appareil pour les préventes.
 - La lecture des QR codes utilise la fonction intégrée de Chrome sur Android. Sur un appareil qui ne la propose pas (iPhone/iPad, navigateur de bureau), saisir le code à la main.
 
 ## Contrôle des préventes
 
-**Depuis la v23, le bouton « Scanner une prévente » est retiré** : les QR codes se scannent avec l'appareil photo de la tablette, puis la prévente s'encode en « Entrée invité/prévente » (0 €). Les fonctions ci-dessous restent dans le code (anciens scans, compteur « Préventes QR ») mais ne sont plus accessibles.
+Tuile **« Scanner une prévente »** de la caisse Entrées (sous les 4 tuiles) :
 
-À chaque scan, la caisse Entrées vérifie, dans l'ordre :
-
-1. **Le format du QR** : un QR officiel est de la forme
+1. La caméra lit le QR code du billet (ou on tape le code dans le champ).
+2. **Contrôle du format** : un QR officiel est de la forme
    `https://chlorophylle-night-by-xa.be/Chloropylle/admin/display_ev.php?q=<code de 32 caractères 0-9 a-f>&action=control`
-   (attention : « Chloropylle » sans « h » dans l'adresse officielle). Tout autre QR affiche **« QR non reconnu »**. Seul le code de 32 caractères est enregistré. Le modèle est dans `catalogue.json` (`prevente.modele`).
-2. **Le doublon** : billet déjà scanné sur cet appareil → **« Déjà scannée »** avec l'heure du premier passage.
-3. **La liste des billets vendus** (si elle est chargée) : code absent → **« Billet inconnu »**.
+   (attention : « Chloropylle » sans « h » dans l'adresse officielle). Le modèle est dans `catalogue.json` (`prevente.modele`). Un autre QR affiche **« QR non reconnu »** : **Refuser** ou **Laisser entrer quand même**.
+3. **Nombre d'entrées** : un QR peut valoir plusieurs entrées. Choisir le nombre (boutons 1 à 6, ou − / + jusqu'à 99), puis **Valider N entrées**. **Annuler · scanner le suivant** n'enregistre rien.
+4. « ✓ N entrées validées » reste affiché jusqu'à **Scanner le suivant**.
 
-Dans chaque cas d'alerte : **Refuser** ou **Laisser entrer quand même** (l'entrée est alors marquée dans l'historique et dans les fichiers envoyés : doublon, QR non reconnu ou hors liste).
-Le code du billet peut aussi être saisi à la main (code seul ou adresse complète).
+**Pas de contrôle des doublons** : un même QR peut être lu plusieurs fois (par exemple si un groupe arrive en plusieurs fois). Chaque lecture validée est enregistrée comme une **vente d'entrée à 0 €** sur un produit propre aux préventes scannées : **`prevente-qr` « Prévente QR code »**, quantité = nombre d'entrées (paiement « gratuit », avec le code du QR). Ce produit n'a pas de tuile : il n'est utilisé que par le scan. Ces entrées comptent dans « Entrées ce soir » et dans « Préventes QR », pas dans « Payantes ».
 
-**Prévente sans QR code** (QR perdu) ou **invité** : ajouter **« Entrée invité/prévente »** (0 €) au panier, autant de fois que de personnes, puis **Valider (0 €)**. Le client sans QR montre la preuve de son paiement (mail de confirmation, extrait bancaire…) : vérifier soi-même qu'elle correspond à la soirée. Pour une table offerte : **« Table VIP invité »**. Dans les compteurs, les entrées à 0 € comptent dans « Entrées ce soir » mais pas dans « Payantes » ; les tables invitées comptent dans « Tables VIP ».
+Prévente **sans QR code** ou invité : tuile **« Entrée invité/prévente »** (0 €).
 
 **Liste des préventes validées** : toucher le compteur **« Préventes QR »** de la caisse Entrées affiche les codes déjà validés ce soir sur l'appareil (heure, code, pastille si l'entrée a été forcée), avec une recherche par code (quelques caractères, ou l'adresse complète collée).
 
-**Liste des billets vendus** : pas encore en place (elle sera intégrée plus tard). En attendant, seuls le format et les doublons sont contrôlés.
+**Liste des billets vendus** (v26) : export de la billetterie (CSV « ; ») déposé dans le dossier **`preventes/`** du dépôt **privé** `scraper147/ventes` (jamais dans le dépôt public de l'app). Colonnes utilisées : `control` (code du QR), `cout` (prix ; **nombre d'entrées = prix ÷ 12**), `paye` (vide/NULL = non payé), `reference` (AAAAMMJJ) et `date` (jour de la soirée). Le fichier complet de la billetterie convient ; un fichier réduit à ces 5 colonnes (sans noms ni e-mails) est préférable.
 
-**Phase de test** : menu **⋮ → TEST · Effacer les préventes** efface toutes les préventes scannées sur l'appareil, pour pouvoir rescanner les mêmes QR codes. Les entrées payantes, tickets et commandes ne sont pas touchés. **À retirer avant la soirée** (`TEST_EFFACER_PREVENTES = false` dans `index.html`).
+- **Chargement automatique** sur chaque appareil déverrouillé pour l'envoi GitHub : au démarrage, au déverrouillage, au retour du réseau / au premier plan, puis toutes les 10 minutes. Hors ligne, la dernière liste chargée est utilisée. Pour une liste mise à jour, remplacer le fichier dans `preventes/` (tous les fichiers du dossier sont fusionnés).
+- La fenêtre de scan affiche l'état : « Liste des préventes : N billets dont X (Y entrées) pour ce soir · mise à jour à HH:MM ».
+- Au scan, avec la liste : code absent → **Billet inconnu** ; billet d'une **autre soirée** → **Mauvaise soirée** ; billet **non payé** → **Paiement non confirmé** (demander la preuve). Chaque fois : Refuser ou Laisser entrer quand même.
+- Sinon, l'écran du nombre d'entrées affiche « Billet : N entrées · soirée du JJ/MM » et propose N, moins les entrées déjà validées ce soir pour ce QR (affichées en orange, sans bloquer).
+
+**Phase de test** : menu **⋮ → TEST · Effacer les préventes** efface toutes les préventes scannées sur l'appareil (remise à zéro du compteur pendant les tests). Les entrées payantes, tickets et commandes ne sont pas touchés. **À retirer avant la soirée** (`TEST_EFFACER_PREVENTES = false` dans `index.html`).
 
 ## Envoi des ventes sur GitHub (dépôt privé `scraper147/ventes`)
 
@@ -95,12 +97,13 @@ Le catalogue (prix des entrées, prix de la case et nombre de cases par carte, b
 - Un catalogue de secours est intégré à l'app : il sert uniquement si `catalogue.json` n'a jamais pu être chargé.
 - Les `id` des boissons ne doivent pas changer pendant une soirée.
 - Entrées : le prix peut être **0** (invités). Champ facultatif `compte` : `"personne"` (compte dans les entrées) ou `"table"` (compte dans les tables VIP) ; sans ce champ, un `id` ou libellé contenant « vip » ou « table » est compté comme table.
+- L'id **`prevente-qr`** est réservé aux préventes scannées. On peut l'ajouter au catalogue (prix 0) pour changer son libellé ; il n'apparaît jamais comme tuile.
 
 ## Mettre à jour l'app
 
-Remplacer les fichiers sur GitHub, **et augmenter le numéro de cache dans `sw.js`** (actuellement `PREFIX + 'v23'`) ainsi que `APP_VERSION` dans `index.html` (même numéro).
+Remplacer les fichiers sur GitHub, **et augmenter le numéro de cache dans `sw.js`** (actuellement `PREFIX + 'v26'`) ainsi que `APP_VERSION` dans `index.html` (même numéro).
 
-- Le numéro de version s'affiche en bas de l'accueil (« App v23 · … ») : c'est le moyen de vérifier qu'un appareil a bien la dernière version.
+- Le numéro de version s'affiche en bas de l'accueil (« App v26 · … ») : c'est le moyen de vérifier qu'un appareil a bien la dernière version.
 - GitHub Pages met 1 à 2 minutes à publier après le commit.
 - Depuis la v12, l'appareil prend la nouvelle version à l'ouverture de l'app avec réseau et se recharge tout seul (sur l'accueil, jamais pendant une vente).
 - Si un appareil reste sur une ancienne version : fermer complètement l'app (balayer dans les apps récentes), attendre une dizaine de minutes, la rouvrir avec réseau, puis la fermer et rouvrir encore une fois. **Ne jamais effacer les données de Chrome** pour forcer la mise à jour : les ventes de l'appareil seraient perdues.
