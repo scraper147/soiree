@@ -55,7 +55,7 @@ Tuile **« Scanner une prévente »** de la caisse Entrées (sous les 4 tuiles) 
 2. **Contrôle du format** : un QR officiel est de la forme
    `https://chlorophylle-night-by-xa.be/Chloropylle/admin/display_ev.php?q=<code de 32 caractères 0-9 a-f>&action=control`
    (attention : « Chloropylle » sans « h » dans l'adresse officielle). Le modèle est dans `catalogue.json` (`prevente.modele`). Un autre QR affiche **« QR non reconnu »** : **Refuser** ou **Laisser entrer quand même**.
-3. **Nombre d'entrées** : un QR peut valoir plusieurs entrées. Choisir le nombre (boutons 1 à 6, ou − / + jusqu'à 99), puis **Valider N entrées**. **Annuler · scanner le suivant** n'enregistre rien.
+3. **Nombre d'entrées** : un QR peut valoir plusieurs entrées. Choisir le nombre (boutons 1 à 6, ou − / + jusqu'à 9), puis **Valider N entrées**. **Annuler · scanner le suivant** n'enregistre rien.
 4. « ✓ N entrées validées » reste affiché jusqu'à **Scanner le suivant**.
 
 **Pas de contrôle des doublons** : un même QR peut être lu plusieurs fois (par exemple si un groupe arrive en plusieurs fois). Chaque lecture validée est enregistrée comme une **vente d'entrée à 0 €** sur un produit propre aux préventes scannées : **`prevente-qr` « Prévente QR code »**, quantité = nombre d'entrées (paiement « gratuit », avec le code du QR). Ce produit n'a pas de tuile : il n'est utilisé que par le scan. Ces entrées comptent dans « Entrées ce soir » et dans « Préventes QR », pas dans « Payantes ».
@@ -69,7 +69,7 @@ Prévente **sans QR code** ou invité : tuile **« Entrée invité/prévente »*
 - **Chargement automatique** sur chaque appareil déverrouillé pour l'envoi GitHub : au démarrage, au déverrouillage, au retour du réseau / au premier plan, puis toutes les 10 minutes. Hors ligne, la dernière liste chargée est utilisée. Pour une liste mise à jour, remplacer le fichier dans `preventes/` (tous les fichiers du dossier sont fusionnés).
 - La fenêtre de scan affiche l'état : « Liste des préventes : N billets dont X (Y entrées) pour ce soir · mise à jour à HH:MM ».
 - Au scan, avec la liste : code absent → **Billet inconnu** ; billet d'une **autre soirée** → **Mauvaise soirée** ; billet **non payé** → **Paiement non confirmé** (demander la preuve). Chaque fois : Refuser ou Laisser entrer quand même.
-- Sinon, l'écran du nombre d'entrées affiche « Billet : N entrées · soirée du JJ/MM » et propose N, moins les entrées déjà validées ce soir pour ce QR (affichées en orange, sans bloquer).
+- Sinon, l'écran du nombre d'entrées affiche « Billet : N entrées · soirée du JJ/MM » et propose N, moins les entrées déjà validées ce soir pour ce QR (affichées en orange, sans bloquer). **On ne peut jamais choisir plus de N entrées** (« maximum N » ; billet d'1 prévente → seulement 1). **Limite absolue : 9 entrées par QR code** (aussi sans liste, ou pour un QR inconnu / non reconnu accepté quand même).
 
 **Phase de test** : menu **⋮ → TEST · Effacer les préventes** efface toutes les préventes scannées sur l'appareil (remise à zéro du compteur pendant les tests). Les entrées payantes, tickets et commandes ne sont pas touchés. **À retirer avant la soirée** (`TEST_EFFACER_PREVENTES = false` dans `index.html`).
 
@@ -101,9 +101,9 @@ Le catalogue (prix des entrées, prix de la case et nombre de cases par carte, b
 
 ## Mettre à jour l'app
 
-Remplacer les fichiers sur GitHub, **et augmenter le numéro de cache dans `sw.js`** (actuellement `PREFIX + 'v27'`) ainsi que `APP_VERSION` dans `index.html` (même numéro).
+Remplacer les fichiers sur GitHub, **et augmenter le numéro de cache dans `sw.js`** (actuellement `PREFIX + 'v29'`) ainsi que `APP_VERSION` dans `index.html` (même numéro).
 
-- Le numéro de version s'affiche en bas de l'accueil (« App v27 · … ») : c'est le moyen de vérifier qu'un appareil a bien la dernière version.
+- Le numéro de version s'affiche en bas de l'accueil (« App v29 · … ») : c'est le moyen de vérifier qu'un appareil a bien la dernière version.
 - GitHub Pages met 1 à 2 minutes à publier après le commit.
 - Depuis la v12, l'appareil prend la nouvelle version à l'ouverture de l'app avec réseau et se recharge tout seul (sur l'accueil, jamais pendant une vente).
 - Si un appareil reste sur une ancienne version : fermer complètement l'app (balayer dans les apps récentes), attendre une dizaine de minutes, la rouvrir avec réseau, puis la fermer et rouvrir encore une fois. **Ne jamais effacer les données de Chrome** pour forcer la mise à jour : les ventes de l'appareil seraient perdues.

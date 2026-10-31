@@ -308,7 +308,7 @@ var LOGO_S = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMDAgQ
 /* Catalogue intégré : utilisé tant que catalogue.json n'a pas pu être chargé (premier lancement sans réseau, aperçu). */
 var DEFAULT_CAT = {"format": "chlorophylle-caisse/catalogue", "formatVersion": 1, "version": 3, "date": "2026-10-30", "soiree": "Chlorophylle Night", "entrees": [{"id": "entree", "libelle": "Entrée", "prix": 15, "ordre": 1, "actif": true, "compte": "personne"}, {"id": "vip", "libelle": "Table VIP", "prix": 300, "ordre": 2, "actif": true, "compte": "table"}, {"id": "entree1", "libelle": "Entrée invité/prévente", "prix": 0, "ordre": 3, "actif": true, "compte": "personne"}, {"id": "entree2", "libelle": "Table VIP invité", "prix": 0, "ordre": 4, "actif": true, "compte": "table"}], "tickets": {"prixCase": 3, "casesParCarte": 18}, "prevente": {"modele": "^https://chlorophylle-night-by-xa\\.be/Chloropylle/admin/display_ev\\.php\\?q=([0-9a-fA-F]{32})&action=control$", "description": "QR officiels : https://chlorophylle-night-by-xa.be/Chloropylle/admin/display_ev.php?q=<32 caractères 0-9 a-f>&action=control (le groupe entre parenthèses est le code du billet)"}, "boissons": [{"id": "softs", "nom": "Softs", "ordre": 1, "produits": [{"id": "eau-plate", "libelle": "Eau plate", "format": "verre", "cases": 1, "ordre": 1, "actif": true}, {"id": "eau-petillante", "libelle": "Eau pétillante", "format": "verre", "cases": 1, "ordre": 2, "actif": true}, {"id": "coca", "libelle": "Coca-Cola", "format": "verre", "cases": 1, "ordre": 3, "actif": true}, {"id": "redbull", "libelle": "Red Bull", "format": "verre", "cases": 1, "ordre": 4, "actif": true}, {"id": "fanta", "libelle": "Fanta", "format": "verre", "cases": 1, "ordre": 5, "actif": true}, {"id": "sprite", "libelle": "Sprite", "format": "verre", "cases": 1, "ordre": 6, "actif": true}, {"id": "icetea", "libelle": "Ice Tea", "format": "verre", "cases": 1, "ordre": 7, "actif": true}], "actif": true}, {"id": "bieres", "nom": "Bières", "ordre": 2, "produits": [{"id": "jupiler", "libelle": "Jupiler", "format": "verre", "cases": 1, "ordre": 1, "actif": true}, {"id": "bertin-framboise", "libelle": "Bertinchamps Framboise 4,2 %", "format": "verre", "cases": 1, "ordre": 2, "actif": true}, {"id": "bertin-hiver", "libelle": "Bertinchamps Hiver 8 %", "format": "verre", "cases": 1, "ordre": 3, "actif": true}, {"id": "bertin-passion", "libelle": "Bertinchamps Passion 0 %", "format": "verre", "cases": 2, "ordre": 4, "actif": true}, {"id": "desperados", "libelle": "Desperados", "format": "verre", "cases": 2, "ordre": 5, "actif": true}], "actif": true}, {"id": "vins", "nom": "Vins", "ordre": 3, "produits": [{"id": "vin-rouge", "libelle": "Vin rouge", "format": "verre", "cases": 2, "ordre": 1, "actif": true}, {"id": "vin-blanc", "libelle": "Vin blanc", "format": "verre", "cases": 2, "ordre": 2, "actif": true}, {"id": "vin-rose", "libelle": "Vin rosé", "format": "verre", "cases": 2, "ordre": 3, "actif": true}, {"id": "vin-rouge-btl", "libelle": "Vin rouge", "format": "bouteille", "cases": 8, "ordre": 4, "actif": true}, {"id": "vin-blanc-btl", "libelle": "Vin blanc", "format": "bouteille", "cases": 8, "ordre": 5, "actif": true}, {"id": "vin-rose-btl", "libelle": "Vin rosé", "format": "bouteille", "cases": 8, "ordre": 6, "actif": true}], "actif": true}, {"id": "alcools", "nom": "Alcools", "ordre": 4, "produits": [{"id": "jack", "libelle": "Jack Daniel's", "format": "verre", "cases": 3, "ordre": 1, "actif": true}, {"id": "greygoose", "libelle": "Grey Goose", "format": "verre", "cases": 5, "ordre": 2, "actif": true}, {"id": "eristoff-rouge", "libelle": "Eristoff rouge", "format": "verre", "cases": 3, "ordre": 3, "actif": true}, {"id": "eristoff-blanc", "libelle": "Eristoff blanc", "format": "verre", "cases": 3, "ordre": 4, "actif": true}, {"id": "bacardi", "libelle": "Bacardi blanc", "format": "verre", "cases": 3, "ordre": 5, "actif": true}, {"id": "captain", "libelle": "Captain Morgan", "format": "verre", "cases": 3, "ordre": 6, "actif": true}, {"id": "bombay", "libelle": "Bombay Sapphire", "format": "verre", "cases": 3, "ordre": 7, "actif": true}], "actif": true}, {"id": "bouteilles", "nom": "Bouteilles", "ordre": 5, "produits": [{"id": "jack-btl", "libelle": "Jack Daniel's", "format": "bouteille", "cases": 36, "ordre": 1, "actif": true}, {"id": "greygoose-btl", "libelle": "Grey Goose", "format": "bouteille", "cases": 51, "ordre": 2, "actif": true}, {"id": "eristoff-rouge-btl", "libelle": "Eristoff rouge", "format": "bouteille", "cases": 36, "ordre": 3, "actif": true}, {"id": "eristoff-blanc-btl", "libelle": "Eristoff blanc", "format": "bouteille", "cases": 36, "ordre": 4, "actif": true}, {"id": "bacardi-btl", "libelle": "Bacardi blanc", "format": "bouteille", "cases": 36, "ordre": 5, "actif": true}, {"id": "captain-btl", "libelle": "Captain Morgan", "format": "bouteille", "cases": 36, "ordre": 6, "actif": true}, {"id": "bombay-btl", "libelle": "Bombay Sapphire", "format": "bouteille", "cases": 36, "ordre": 7, "actif": true}], "actif": true}, {"id": "cocktails", "nom": "Cocktails", "ordre": 6, "produits": [{"id": "chloro", "libelle": "Chlorophylle Night", "format": "verre", "cases": 3, "ordre": 1, "actif": true}, {"id": "aperol", "libelle": "Apérol Spritz", "format": "verre", "cases": 3, "ordre": 2, "actif": true}, {"id": "stgermain", "libelle": "St-Germain Spritz", "format": "verre", "cases": 3, "ordre": 3, "actif": true}], "actif": true}, {"id": "bulles", "nom": "Bulles", "ordre": 7, "produits": [{"id": "cava", "libelle": "Cava", "format": "verre", "cases": 2, "ordre": 1, "actif": true}, {"id": "champagne", "libelle": "Champagne", "format": "verre", "cases": 4, "ordre": 2, "actif": true}, {"id": "cava-btl", "libelle": "Cava", "format": "bouteille", "cases": 10, "ordre": 3, "actif": true}, {"id": "champagne-btl", "libelle": "Champagne", "format": "bouteille", "cases": 30, "ordre": 4, "actif": true}], "actif": true}]};
 
-var APP_VERSION = 'v27'; // = numéro du cache dans sw.js
+var APP_VERSION = 'v29'; // = numéro du cache dans sw.js
 var CAT_KEY = STORE_KEY + '-catalogue';
 var DEV_KEY = STORE_KEY + '-appareil';
 var FORMAT_CAT = 'chlorophylle-caisse/catalogue';
@@ -575,18 +575,21 @@ function askCount(code, anomalie) {
   S.scan.state = 'count'; S.scan.code = code; S.scan.anomalie = anomalie; S.scanCode = '';
   S.scan.billet = b || null; S.scan.deja = deja;
   /* nombre proposé : entrées du billet (prix ÷ 12) moins celles déjà validées ce soir pour ce QR ; 1 sans liste */
-  S.scan.n = b && b.n ? Math.max(1, b.n - deja.n) : 1;
+  /* v28-v29 : jamais plus d'entrées que le billet n'en compte, et jamais plus de MAX_QR par QR code */
+  S.scan.max = Math.min(MAX_QR, b && b.n ? b.n : MAX_QR);
+  S.scan.n = b && b.n ? Math.min(S.scan.max, Math.max(1, b.n - deja.n)) : 1;
   CAM.ignore = code; CAM.ignoreUntil = Date.now() + 8000;
   beep(true); render();
 }
 /* Entrées déjà validées ce soir pour ce QR (information, ne bloque pas) */
+var MAX_QR = 9; // nombre maximum d'entrées pour un QR code (v29)
 function dejaValide(code) {
   var d = { n: 0, h: null };
   valid(recs(tonight())).forEach(function (r) { if (isQ(r) && r.code === code) { d.n += nbQ(r); if (!d.h || r.horodatage > d.h) d.h = r.horodatage; } });
   return d;
 }
 function recordPrevente(code, anomalie, n) {
-  n = Math.max(1, Math.min(99, Math.round(n || 1)));
+  n = Math.max(1, Math.min(S.scan && S.scan.max || MAX_QR, Math.round(n || 1)));
   var forcee = !!anomalie, night = tonight(), r = { id: nextId('entrees', night, 'E'), caisse: 'entrees', type: 'entree', qr: true, code: code,
     lignes: [{ produitId: PQR_ID, libelle: pqrLibelle(), prixUnitaire: 0, quantite: n, total: 0 }], total: 0, paiement: { mode: 'gratuit', cash: 0, bancontact: 0 } };
   r.controle = PLIST.codes ? 'liste' : CATALOGUE.modeleQR ? 'format' : 'aucun';
@@ -663,8 +666,8 @@ var A = {
   scanNext: function () { S.scan.state = 'live'; S.scanCode = ''; },
   scanRefuse: function () { CAM.ignore = S.scan.code; CAM.ignoreUntil = Date.now() + 8000; S.scan.state = 'live'; S.scanCode = ''; },
   scanForce: function () { var st = S.scan.state; askCount(st === 'format' ? S.scan.raw.slice(0, 300) : S.scan.code, st === 'dup' ? 'doublon' : st); },
-  scanN: function (v) { S.scan.n = Math.max(1, Math.min(99, (S.scan.n || 1) + Number(v))); },
-  scanSetN: function (v) { S.scan.n = Number(v); },
+  scanN: function (v) { S.scan.n = Math.max(1, Math.min(S.scan.max || MAX_QR, (S.scan.n || 1) + Number(v))); },
+  scanSetN: function (v) { S.scan.n = Math.max(1, Math.min(S.scan.max || MAX_QR, Number(v))); },
   scanOk: function () { recordPrevente(S.scan.code, S.scan.anomalie, S.scan.n); },
   // Tickets
   tkAdd: function (n) { S.tk.cases = Math.max(0, Math.min(9999, S.tk.cases + (+n))); S.tk.budget = null; },
@@ -1455,14 +1458,14 @@ function vPay() {
 function vScan() {
   var s = S.scan || {}, msg = '';
   if (s.state === 'count') {
-    var qs = ''; for (var k = 1; k <= 6; k++) qs += '<button class="btn' + (s.n === k ? ' btn-primary' : '') + '" data-a="scanSetN" data-v="' + k + '" style="flex:1;height:56px;font-size:22px;font-weight:800;min-width:0;padding:0">' + k + '</button>';
+    var qs = ''; var mx = s.max || MAX_QR; for (var k = 1; k <= Math.min(6, mx); k++) qs += '<button class="btn' + (s.n === k ? ' btn-primary' : '') + '" data-a="scanSetN" data-v="' + k + '" style="flex:1;height:56px;font-size:22px;font-weight:800;min-width:0;padding:0">' + k + '</button>';
     msg = '<div class="scanmsg ok" style="gap:12px"><big>' + (s.anomalie ? '⚠ QR accepté' : '✓ QR valide') + '</big><code>' + esc(String(s.code).slice(0, 160)) + '</code>' +
       (s.billet && s.billet.n ? '<span style="font-size:20px;font-weight:800;color:#fff">Billet : ' + plural(s.billet.n, 'entrée') + (s.billet.s ? ' · soirée du ' + frDate(s.billet.s).slice(0, 5) : '') + '</span>' : '') +
       (s.deja && s.deja.n ? '<span style="background:rgba(150,95,10,.9);color:#fff;padding:6px 12px;border-radius:10px;font-size:16px">Déjà validé ce soir : <strong>' + plural(s.deja.n, 'entrée') + '</strong> (dernière à ' + hhmm(s.deja.h) + ')' + (s.billet && s.billet.n && s.deja.n >= s.billet.n ? ' · <strong>toutes les entrées du billet sont passées</strong>' : '') + '</span>' : '') +
-      '<span style="font-size:18px;font-weight:700">Nombre d\u2019entrées à valider ?</span>' +
+      '<span style="font-size:18px;font-weight:700">Nombre d\u2019entrées à valider ?' + (mx ? ' <span style="font-weight:600;opacity:.85">(maximum ' + mx + ')</span>' : '') + '</span>' +
       '<div style="display:flex;gap:6px;width:100%">' + qs + '</div>' +
       '<div style="display:flex;align-items:center;justify-content:center;gap:18px"><button class="btn" data-a="scanN" data-v="-1" style="width:64px;height:64px;font-size:30px"' + (s.n > 1 ? '' : ' disabled') + '>−</button>' +
-      '<b style="font-size:54px;min-width:80px;text-align:center;line-height:1">' + s.n + '</b><button class="btn" data-a="scanN" data-v="1" style="width:64px;height:64px;font-size:30px">+</button></div></div>';
+      '<b style="font-size:54px;min-width:80px;text-align:center;line-height:1">' + s.n + '</b><button class="btn" data-a="scanN" data-v="1" style="width:64px;height:64px;font-size:30px"' + (s.n < mx ? '' : ' disabled') + '>+</button></div></div>';
   }
   else if (s.state === 'ok') msg = '<div class="scanmsg ok"><big>✓ ' + plural(s.n || 1, 'entrée') + ' validée' + ((s.n || 1) > 1 ? 's' : '') + '</big><code>' + esc(s.code) + '</code><span>' + (s.forcee ? 'Entrée acceptée malgré l\u2019alerte' : 'Prévente enregistrée') +
     (s.forcee ? '' : s.controle === 'liste' ? ' · billet trouvé dans la liste' : s.controle === 'format' ? ' · QR officiel (format)' : '') + '</span></div>';
