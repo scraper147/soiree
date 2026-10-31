@@ -4,7 +4,7 @@ Application de caisse pour la soirée **Chlorophylle Night by 'Xa**, sur tablett
 
 | Caisse | Rôle |
 |---|---|
-| **Entrées** | Entrée 15 €, Table VIP 300 €, **Entrée invité/prévente (0 €)**, **Table VIP invité (0 €)**, encaissement Cash / Bancontact / Mixte. Un panier qui ne contient que des articles à 0 € se valide directement (bouton **Valider (0 €)**, sans écran de paiement). Tuile **Scanner une prévente** : contrôle du format du QR officiel, puis choix du **nombre d'entrées** liées au QR (pas de contrôle des doublons). |
+| **Entrées** | Entrée 15 €, Table VIP 300 €, **Entrée invité/prévente (0 €)**, **Table VIP invité (0 €)**, encaissement Cash / Bancontact / Mixte. **Remise** : toucher une ligne payante du panier (nom de l'entrée) pour encoder une remise en euros sur cette ligne (limitée au montant de la ligne) ; elle apparaît dans le panier, l'historique et les fichiers envoyés (`remise` sur la ligne, `total` = montant après remise). Un panier qui ne contient que des articles à 0 € se valide directement (bouton **Valider (0 €)**, sans écran de paiement). Tuile **Scanner une prévente** : contrôle du format du QR officiel, puis choix du **nombre d'entrées** liées au QR (pas de contrôle des doublons). |
 | **Tickets** | Cartes de 18 cases à 3 € la case (54 € la carte). Boutons + / − 1 carte et + / − 1 case. Pavé « Le client demande… » : **un nombre de cases** (calcule le prix) ou **un budget** (calcule le maximum de cases et ce qui reste). Encaissement normal. |
 | **Boissons** | Le serveur encode la commande ; l'app affiche le **nombre de cases à barrer** sur la carte du client. Aucun encaissement. |
 
@@ -101,9 +101,9 @@ Le catalogue (prix des entrées, prix de la case et nombre de cases par carte, b
 
 ## Mettre à jour l'app
 
-Remplacer les fichiers sur GitHub, **et augmenter le numéro de cache dans `sw.js`** (actuellement `PREFIX + 'v26'`) ainsi que `APP_VERSION` dans `index.html` (même numéro).
+Remplacer les fichiers sur GitHub, **et augmenter le numéro de cache dans `sw.js`** (actuellement `PREFIX + 'v27'`) ainsi que `APP_VERSION` dans `index.html` (même numéro).
 
-- Le numéro de version s'affiche en bas de l'accueil (« App v26 · … ») : c'est le moyen de vérifier qu'un appareil a bien la dernière version.
+- Le numéro de version s'affiche en bas de l'accueil (« App v27 · … ») : c'est le moyen de vérifier qu'un appareil a bien la dernière version.
 - GitHub Pages met 1 à 2 minutes à publier après le commit.
 - Depuis la v12, l'appareil prend la nouvelle version à l'ouverture de l'app avec réseau et se recharge tout seul (sur l'accueil, jamais pendant une vente).
 - Si un appareil reste sur une ancienne version : fermer complètement l'app (balayer dans les apps récentes), attendre une dizaine de minutes, la rouvrir avec réseau, puis la fermer et rouvrir encore une fois. **Ne jamais effacer les données de Chrome** pour forcer la mise à jour : les ventes de l'appareil seraient perdues.

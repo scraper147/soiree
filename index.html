@@ -308,7 +308,7 @@ var LOGO_S = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMDAgQ
 /* Catalogue intégré : utilisé tant que catalogue.json n'a pas pu être chargé (premier lancement sans réseau, aperçu). */
 var DEFAULT_CAT = {"format": "chlorophylle-caisse/catalogue", "formatVersion": 1, "version": 3, "date": "2026-10-30", "soiree": "Chlorophylle Night", "entrees": [{"id": "entree", "libelle": "Entrée", "prix": 15, "ordre": 1, "actif": true, "compte": "personne"}, {"id": "vip", "libelle": "Table VIP", "prix": 300, "ordre": 2, "actif": true, "compte": "table"}, {"id": "entree1", "libelle": "Entrée invité/prévente", "prix": 0, "ordre": 3, "actif": true, "compte": "personne"}, {"id": "entree2", "libelle": "Table VIP invité", "prix": 0, "ordre": 4, "actif": true, "compte": "table"}], "tickets": {"prixCase": 3, "casesParCarte": 18}, "prevente": {"modele": "^https://chlorophylle-night-by-xa\\.be/Chloropylle/admin/display_ev\\.php\\?q=([0-9a-fA-F]{32})&action=control$", "description": "QR officiels : https://chlorophylle-night-by-xa.be/Chloropylle/admin/display_ev.php?q=<32 caractères 0-9 a-f>&action=control (le groupe entre parenthèses est le code du billet)"}, "boissons": [{"id": "softs", "nom": "Softs", "ordre": 1, "produits": [{"id": "eau-plate", "libelle": "Eau plate", "format": "verre", "cases": 1, "ordre": 1, "actif": true}, {"id": "eau-petillante", "libelle": "Eau pétillante", "format": "verre", "cases": 1, "ordre": 2, "actif": true}, {"id": "coca", "libelle": "Coca-Cola", "format": "verre", "cases": 1, "ordre": 3, "actif": true}, {"id": "redbull", "libelle": "Red Bull", "format": "verre", "cases": 1, "ordre": 4, "actif": true}, {"id": "fanta", "libelle": "Fanta", "format": "verre", "cases": 1, "ordre": 5, "actif": true}, {"id": "sprite", "libelle": "Sprite", "format": "verre", "cases": 1, "ordre": 6, "actif": true}, {"id": "icetea", "libelle": "Ice Tea", "format": "verre", "cases": 1, "ordre": 7, "actif": true}], "actif": true}, {"id": "bieres", "nom": "Bières", "ordre": 2, "produits": [{"id": "jupiler", "libelle": "Jupiler", "format": "verre", "cases": 1, "ordre": 1, "actif": true}, {"id": "bertin-framboise", "libelle": "Bertinchamps Framboise 4,2 %", "format": "verre", "cases": 1, "ordre": 2, "actif": true}, {"id": "bertin-hiver", "libelle": "Bertinchamps Hiver 8 %", "format": "verre", "cases": 1, "ordre": 3, "actif": true}, {"id": "bertin-passion", "libelle": "Bertinchamps Passion 0 %", "format": "verre", "cases": 2, "ordre": 4, "actif": true}, {"id": "desperados", "libelle": "Desperados", "format": "verre", "cases": 2, "ordre": 5, "actif": true}], "actif": true}, {"id": "vins", "nom": "Vins", "ordre": 3, "produits": [{"id": "vin-rouge", "libelle": "Vin rouge", "format": "verre", "cases": 2, "ordre": 1, "actif": true}, {"id": "vin-blanc", "libelle": "Vin blanc", "format": "verre", "cases": 2, "ordre": 2, "actif": true}, {"id": "vin-rose", "libelle": "Vin rosé", "format": "verre", "cases": 2, "ordre": 3, "actif": true}, {"id": "vin-rouge-btl", "libelle": "Vin rouge", "format": "bouteille", "cases": 8, "ordre": 4, "actif": true}, {"id": "vin-blanc-btl", "libelle": "Vin blanc", "format": "bouteille", "cases": 8, "ordre": 5, "actif": true}, {"id": "vin-rose-btl", "libelle": "Vin rosé", "format": "bouteille", "cases": 8, "ordre": 6, "actif": true}], "actif": true}, {"id": "alcools", "nom": "Alcools", "ordre": 4, "produits": [{"id": "jack", "libelle": "Jack Daniel's", "format": "verre", "cases": 3, "ordre": 1, "actif": true}, {"id": "greygoose", "libelle": "Grey Goose", "format": "verre", "cases": 5, "ordre": 2, "actif": true}, {"id": "eristoff-rouge", "libelle": "Eristoff rouge", "format": "verre", "cases": 3, "ordre": 3, "actif": true}, {"id": "eristoff-blanc", "libelle": "Eristoff blanc", "format": "verre", "cases": 3, "ordre": 4, "actif": true}, {"id": "bacardi", "libelle": "Bacardi blanc", "format": "verre", "cases": 3, "ordre": 5, "actif": true}, {"id": "captain", "libelle": "Captain Morgan", "format": "verre", "cases": 3, "ordre": 6, "actif": true}, {"id": "bombay", "libelle": "Bombay Sapphire", "format": "verre", "cases": 3, "ordre": 7, "actif": true}], "actif": true}, {"id": "bouteilles", "nom": "Bouteilles", "ordre": 5, "produits": [{"id": "jack-btl", "libelle": "Jack Daniel's", "format": "bouteille", "cases": 36, "ordre": 1, "actif": true}, {"id": "greygoose-btl", "libelle": "Grey Goose", "format": "bouteille", "cases": 51, "ordre": 2, "actif": true}, {"id": "eristoff-rouge-btl", "libelle": "Eristoff rouge", "format": "bouteille", "cases": 36, "ordre": 3, "actif": true}, {"id": "eristoff-blanc-btl", "libelle": "Eristoff blanc", "format": "bouteille", "cases": 36, "ordre": 4, "actif": true}, {"id": "bacardi-btl", "libelle": "Bacardi blanc", "format": "bouteille", "cases": 36, "ordre": 5, "actif": true}, {"id": "captain-btl", "libelle": "Captain Morgan", "format": "bouteille", "cases": 36, "ordre": 6, "actif": true}, {"id": "bombay-btl", "libelle": "Bombay Sapphire", "format": "bouteille", "cases": 36, "ordre": 7, "actif": true}], "actif": true}, {"id": "cocktails", "nom": "Cocktails", "ordre": 6, "produits": [{"id": "chloro", "libelle": "Chlorophylle Night", "format": "verre", "cases": 3, "ordre": 1, "actif": true}, {"id": "aperol", "libelle": "Apérol Spritz", "format": "verre", "cases": 3, "ordre": 2, "actif": true}, {"id": "stgermain", "libelle": "St-Germain Spritz", "format": "verre", "cases": 3, "ordre": 3, "actif": true}], "actif": true}, {"id": "bulles", "nom": "Bulles", "ordre": 7, "produits": [{"id": "cava", "libelle": "Cava", "format": "verre", "cases": 2, "ordre": 1, "actif": true}, {"id": "champagne", "libelle": "Champagne", "format": "verre", "cases": 4, "ordre": 2, "actif": true}, {"id": "cava-btl", "libelle": "Cava", "format": "bouteille", "cases": 10, "ordre": 3, "actif": true}, {"id": "champagne-btl", "libelle": "Champagne", "format": "bouteille", "cases": 30, "ordre": 4, "actif": true}], "actif": true}]};
 
-var APP_VERSION = 'v26'; // = numéro du cache dans sw.js
+var APP_VERSION = 'v27'; // = numéro du cache dans sw.js
 var CAT_KEY = STORE_KEY + '-catalogue';
 var DEV_KEY = STORE_KEY + '-appareil';
 var FORMAT_CAT = 'chlorophylle-caisse/catalogue';
@@ -422,7 +422,10 @@ function addRecord(r) {
 }
 
 /* ---------- Totaux ---------- */
-function cartETotal() { return S.cartE.reduce(function (a, l) { return a + l.prix * l.qty; }, 0); }
+/* Remise en euros sur une ligne du panier Entrées (v27) : jamais plus que le montant de la ligne */
+function remiseE(l) { return Math.min(Math.max(0, l.remise || 0), r2(l.prix * l.qty)); }
+function lineTotE(l) { return r2(l.prix * l.qty - remiseE(l)); }
+function cartETotal() { return r2(S.cartE.reduce(function (a, l) { return a + lineTotE(l); }, 0)); }
 function cartBCases() { return S.cartB.reduce(function (a, l) { return a + l.cases * l.qty; }, 0); }
 function payTotal() { return S.caisse === 'entrees' ? cartETotal() : S.tk.cases * PC(); }
 function tkText(n) {
@@ -457,7 +460,7 @@ function summarize(list) {
     if (r.type === 'prevente') { R.entrees.preventes += nbQ(r); if (r.sansQR) R.entrees.sansQR = (R.entrees.sansQR || 0) + 1; if (r.forcee) { R.entrees.forcees++; R.entrees.anomalies[r.anomalie || 'doublon']++; } hour(r, 'entrees', nbQ(r)); }
     else if (r.type === 'entree') {
       if (r.qr) { if (r.forcee) { R.entrees.forcees++; R.entrees.anomalies[r.anomalie || 'format'] = (R.entrees.anomalies[r.anomalie || 'format'] || 0) + 1; } } else R.entrees.ventes++;
-      R.entrees.recette += r.total;
+      R.entrees.recette += r.total; (r.lignes || []).forEach(function (l) { if (l.remise) R.entrees.remises = r2((R.entrees.remises || 0) + l.remise); });
       r.lignes.forEach(function (l) {
         var p = R.entrees.produits[l.produitId] || (R.entrees.produits[l.produitId] = { libelle: l.libelle, quantite: 0, total: 0 });
         p.quantite += l.quantite; p.total += l.total;
@@ -649,7 +652,11 @@ var A = {
     if (l) l.qty++; else S.cartE.push({ id: e.id, libelle: e.libelle, prix: e.prix, qty: 1 });
   },
   incE: function (i) { S.cartE[+i].qty++; },
-  decE: function (i) { i = +i; if (--S.cartE[i].qty <= 0) S.cartE.splice(i, 1); },
+  decE: function (i) { i = +i; if (--S.cartE[i].qty <= 0) S.cartE.splice(i, 1); else if (S.cartE[i].remise) S.cartE[i].remise = remiseE(S.cartE[i]); },
+  remE: function (i) { var l = S.cartE[+i]; if (!l || !(l.prix > 0)) return; S.remI = +i; S.remVal = l.remise ? String(l.remise).replace('.', ',') : ''; S.modal = 'remise'; },
+  remSet: function (v) { S.remVal = String(v); },
+  remOk: function () { var l = S.cartE[S.remI]; if (l) { var v = r2(num(S.remVal)); l.remise = v > 0 ? Math.min(v, r2(l.prix * l.qty)) : 0; if (!l.remise) delete l.remise; } S.modal = null; },
+  remDel: function () { var l = S.cartE[S.remI]; if (l) delete l.remise; S.modal = null; },
   clearE: function () { S.cartE = []; },
   scan: function () { S.menu = false; S.modal = 'scan'; S.scan = { state: 'live', cam: 'starting' }; S.scanCode = ''; camStart(); },
   scanManual: function () { if (S.scanCode.trim()) onCode(S.scanCode, true); },
@@ -709,7 +716,7 @@ var A = {
     else { var c = r2(num(S.mix)); pay = { mode: 'mixte', cash: c, bancontact: r2(t - c) }; }
     if (S.caisse === 'entrees') {
       r = { id: nextId('entrees', night, 'E'), caisse: 'entrees', type: 'entree',
-        lignes: S.cartE.map(function (l) { return { produitId: l.id, libelle: l.libelle, prixUnitaire: l.prix, quantite: l.qty, total: r2(l.prix * l.qty) }; }),
+        lignes: S.cartE.map(function (l) { var o = { produitId: l.id, libelle: l.libelle, prixUnitaire: l.prix, quantite: l.qty, total: lineTotE(l) }; if (remiseE(l)) o.remise = remiseE(l); return o; }),
         total: t, paiement: pay };
       S.cartE = [];
     } else {
@@ -1220,7 +1227,8 @@ function vEntrees() {
     }).join('') +
     '<button class="bigt scan" data-a="scan">' + svg(I.qr, 54) + '<div style="display:flex;flex-direction:column;gap:4px"><span class="m">Scanner une prévente</span><span class="sub">QR code du billet · contrôle du format, puis nombre d\u2019entrées</span></div></button>' +
     '</div></div>';
-  html += vCart('E', S.cartE, function (l) { return money(l.prix) + ' / unité'; }, function (l) { return money(l.prix * l.qty); },
+  html += vCart('E', S.cartE, function (l) { return money(l.prix) + ' / unité' + (remiseE(l) ? ' · <b style="color:var(--amber)">remise −' + money(remiseE(l)) + '</b>' : l.prix > 0 ? ' · <span style="opacity:.7">toucher pour une remise</span>' : ''); },
+    function (l) { return (remiseE(l) ? '<s style="opacity:.55;font-size:.8em;margin-right:6px">' + money(l.prix * l.qty) + '</s>' : '') + money(lineTotE(l)); },
     '<div class="row"><span style="font-size:22px;font-weight:800">TOTAL</span><span class="total">' + money(cartETotal()) + '</span></div>' +
     '<button class="pay" data-a="openPay"' + (S.cartE.length ? '' : ' disabled') + '>' + (tot0 ? 'Valider (0\u00a0€)' : 'Encaisser') + '</button>', 'Panier', 'Touchez une entrée pour l’ajouter',
     money(cartETotal()));
@@ -1237,7 +1245,8 @@ function vCart(K, cart, unit, lineTot, footer, title, emptyTxt, barTotal) {
     '<h2>' + title + '</h2>' + (cart.length ? '<button class="small btn-danger" data-a="clear' + K + '">Vider</button>' : '') + '</div><div class="lines">';
   if (!cart.length) html += '<div class="empty">' + emptyTxt + '</div>';
   cart.forEach(function (l, i) {
-    html += '<div class="line"><div class="info"><span class="n">' + esc(l.libelle) + (l.format === 'bouteille' ? ' <span class="pill">bouteille</span>' : '') + '</span><span class="u">' + unit(l) + '</span></div>' +
+    var clic = K === 'E' && l.prix > 0;
+    html += '<div class="line"><div class="info"' + (clic ? ' data-a="remE" data-v="' + i + '" style="cursor:pointer" title="Toucher pour une remise"' : '') + '><span class="n">' + esc(l.libelle) + (l.format === 'bouteille' ? ' <span class="pill">bouteille</span>' : '') + '</span><span class="u">' + unit(l) + '</span></div>' +
       '<div class="qty"><button data-a="dec' + K + '" data-v="' + i + '" aria-label="Retirer un">−</button><span>' + l.qty + '</span><button data-a="inc' + K + '" data-v="' + i + '" aria-label="Ajouter un">+</button></div>' +
       '<span class="t">' + lineTot(l) + '</span></div>';
   });
@@ -1322,7 +1331,7 @@ function vHist() {
     var lines, pm = '', tt;
     if (v.type === 'prevente' && v.sansQR) { lines = ['Prévente sans QR <span class="pill warn">justificatif</span>', '<span class="sub">justificatif de paiement</span>']; tt = '0\u00a0€'; pm = 'Prévente'; }
     else if (isQ(v)) { lines = ['Prévente QR' + (nbQ(v) > 1 ? ' · <strong>' + nbQ(v) + ' entrées</strong>' : '') + (v.forcee ? ' <span class="pill warn">' + ({ format: 'QR non reconnu accepté', inconnu: 'hors liste, accepté', date: 'autre soirée, accepté', nonpaye: 'non payé, accepté' }[v.anomalie] || 'doublon accepté') + '</span>' : v.controle === 'liste' ? ' <span class="pill">liste ✓</span>' : ''), '<span class="sub" style="word-break:break-all">' + esc(v.code) + '</span>']; tt = '0 €'; pm = 'Prévente'; }
-    else if (v.type === 'entree') { lines = v.lignes.map(function (l) { return l.quantite + ' × ' + esc(l.libelle); }); pm = payText(v.paiement); tt = money(v.total); }
+    else if (v.type === 'entree') { lines = v.lignes.map(function (l) { return l.quantite + ' × ' + esc(l.libelle) + (l.remise ? ' <span class="pill warn">remise −' + money(l.remise) + '</span>' : ''); }); pm = payText(v.paiement); tt = money(v.total); }
     else if (v.type === 'ticket') { lines = [plural(v.cases, 'case') + ' (' + tkText(v.cases) + ')']; if (v.budget) lines.push('<span class="sub">budget ' + money(v.budget) + '</span>'); pm = payText(v.paiement); tt = money(v.total); }
     else { lines = v.lignes.map(function (l) { return l.quantite + ' × ' + esc(l.libelle) + (l.format === 'bouteille' ? ' (bouteille)' : '') + ' · ' + plural(l.totalCases, 'case'); }); pm = 'à barrer'; tt = plural(v.totalCases, 'case'); }
     var an = v.annulation;
@@ -1491,6 +1500,19 @@ function vOkB() {
     '<button class="btn btn-primary" data-a="close" style="width:100%;height:60px;font-size:20px">OK · nouvelle commande</button></div></div>';
 }
 
+/* Remise en euros sur une ligne du panier Entrées (v27) */
+function vRemise() {
+  var l = S.cartE[S.remI]; if (!l) return '';
+  var brut = r2(l.prix * l.qty), v = r2(num(S.remVal)), trop = v > brut;
+  var qs = [3, 5, 10, 15].filter(function (x) { return x <= brut; }).map(function (x) { return '<button class="btn" data-a="remSet" data-v="' + x + '" style="flex:1;height:54px;font-size:20px;font-weight:800;min-width:0;padding:0">' + x + '\u00a0€</button>'; }).join('');
+  return '<div class="overlay"><div class="modal" style="width:min(520px,96vw)" data-caisse="entrees"><h2>Remise</h2>' +
+    '<div class="result" style="display:block;font-size:17px;line-height:1.45"><strong>' + l.qty + ' × ' + esc(l.libelle) + '</strong> · ' + money(brut) + '</div>' +
+    '<label class="f">Remise sur cette ligne (€)<input type="text" inputmode="decimal" data-f="remVal" value="' + esc(S.remVal || '') + '" placeholder="0" autocomplete="off" autofocus></label>' +
+    (qs ? '<div style="display:flex;gap:8px">' + qs + '</div>' : '') +
+    '<div class="row" style="font-size:20px"><span>Nouveau total de la ligne</span><strong>' + money(Math.max(0, r2(brut - Math.min(v, brut)))) + '</strong></div>' +
+    (trop ? '<div class="sub" style="color:var(--amber)">La remise est limitée au montant de la ligne (' + money(brut) + ').</div>' : '') +
+    '<div class="actions">' + (l.remise ? '<button class="btn btn-danger" data-a="remDel">Retirer la remise</button>' : '') + '<button class="btn" data-a="close">Annuler</button><button class="btn btn-primary" data-a="remOk">Appliquer</button></div></div></div>';
+}
 function vCancel() {
   var p = (S.cancelRef || '').split('|'), v = recs(p[0]).filter(function (x) { return x.id === p[1]; })[0];
   if (!v) return '';
@@ -1614,7 +1636,7 @@ function render() {
   var act = document.activeElement, f = act && act.dataset ? act.dataset.f : null, pos = f ? act.selectionStart : null;
   if (VIDEO.parentNode !== CAMHOLD) CAMHOLD.appendChild(VIDEO); // la vidéo survit au rendu
   var html = S.screen === 'home' ? vHome() : S.screen === 'bilan' ? vBilan() : vPos();
-  var M = { noqr: vNoQr, qlist: vQlist, testDelQ: vTestDelQ, plist: vPlist, ghcfg: vGhCfg, ghres: vGhRes, pay: vPay, scan: vScan, okB: vOkB, cancel: vCancel, device: vDevice, storage: vStorage, days: vDays, import: vImport };
+  var M = { remise: vRemise, noqr: vNoQr, qlist: vQlist, testDelQ: vTestDelQ, plist: vPlist, ghcfg: vGhCfg, ghres: vGhRes, pay: vPay, scan: vScan, okB: vOkB, cancel: vCancel, device: vDevice, storage: vStorage, days: vDays, import: vImport };
   if (S.storageMsg && !S.modal) S.modal = 'storage';
   if (S.modal && M[S.modal]) html += M[S.modal]();
   if (S.toast) html += '<div class="toast">' + esc(S.toast) + '</div>';
